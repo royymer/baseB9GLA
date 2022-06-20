@@ -38,7 +38,7 @@ export default function Home() {
 
   return (
     
-    <div style={{}}>
+    <div style={{}}> 
       <Header/>
           <Grid container xs={9} style={{marginLeft:'auto', marginRight:'auto'}}>
               
