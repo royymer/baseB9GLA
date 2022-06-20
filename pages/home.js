@@ -7,6 +7,7 @@ import Header from '../components/imported/Header'
 import LayoutBanner from 'components/imported/mainLayoutSlicker'
 import CardSlider from 'components/imported/cardSlider'
 import DataDisplay from 'components/imported/datadisplay'
+import Spacer from 'components/imported/misc/spacer'
 
 //servicios
 import { eventService } from '../src/services'
@@ -36,18 +37,20 @@ export default function Home() {
     console.log(matches)
 
   return (
-    <>
-    <Header/>
-        <Grid container xs={9}>
-            
-            <LayoutBanner/>
-            
-            <CardSlider data={matches} />
-            <DataDisplay data = {matches} />
-            
-        </Grid>
-    <Footer/>
-    </>
+    
+    <div style={{}}>
+      <Header/>
+          <Grid container xs={9} style={{marginLeft:'auto', marginRight:'auto'}}>
+              
+              <LayoutBanner/>
+              
+              <CardSlider data={matches} />
+              <DataDisplay data = {matches} />
+              
+          </Grid>
+      <Footer/>
+    </div>
+    
   )
 }
     
