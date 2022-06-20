@@ -33,7 +33,7 @@ export default function Footer() {
     <Grid container style={{ backgroundColor: "#0D1626", padding: "50px" }}>
       <Grid item xs={12} md={3}>
         <img
-          src="../assets/logo1.png"
+          src="/assets/logo1.png"
           alt=""
           style={{ marginBottom: "35px", fontWeight: "bold" }}
         />

@@ -6,7 +6,6 @@ import { useState } from "react";
 
 const SeatMapMain = () => {
   const [leyenda, setLeyenda] = useState("true");
-  console.log(leyenda);
   const handleChangeLeyenda = (event) => {
     setLeyenda(event.target.value);
   };

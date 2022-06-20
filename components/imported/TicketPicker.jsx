@@ -8,7 +8,7 @@ import BoletosForm from '../imported/misc/forms/boletosForm';
 
 function TicketPicker() {
 
-  const [boletos, setBoletos] = useState("");
+  const [boletos, setBoletos] = useState(1);
 
   let ticketforms = []
   let numeroDePersonas = 0;
@@ -25,8 +25,8 @@ function TicketPicker() {
   return (
     <>
     
-        <Typography sx={{ margin: "10px 0", color: "#636363" }}>
-            Entradas
+        <Typography sx={{ margin: "10px 0", color: "#636363", fontWeight: 'bold', fontSize:'18px' }}>
+            Número de Boletos
         </Typography>
 
         <Box sx={{ width: "250px" }}>

@@ -55,7 +55,7 @@ const BoletosForm = (props) => {
             <ListItem>
               <ListItemButton onClick={() => setOpen(!open)}>
                 <ListItemIcon>{">"}</ListItemIcon>
-                <ListItemText primary={`Formulario numero: ${props.persona}`} />
+                <ListItemText primary={`Información personal ${props.persona}`} />
               </ListItemButton>
             </ListItem>
           </List>
@@ -63,10 +63,10 @@ const BoletosForm = (props) => {
             <List>
               <Paper>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  <Typography>Persona numero {props.persona} </Typography>
-                  <Typography>Nombre</Typography>
+                  
+                  <Typography>Nombres Completos</Typography>
                   <TextField
-                    sx={{ marginBottom: "20px" }}
+                    sx={{ marginBottom: "20px", '&::placeholder':{textAlign:'center', justifyContent:'center'} }}
                     name="firstName"
                     label="Ingrese nombre"
                     variant="outlined"
@@ -114,7 +114,7 @@ const BoletosForm = (props) => {
                     }
                   />
                   <Typography sx={{ marginBottom: "10px" }}>
-                    Documento
+                    Cédula de identidad
                   </Typography>
                   <TextField
                     sx={{ marginBottom: "20px" }}
@@ -145,9 +145,9 @@ const BoletosForm = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    sx={{ backgroundColor: "#FECC1D", marginBottom: "30px" }}
+                    sx={{ backgroundColor: "#FECC1D", marginBottom: "30px", marginLeft:'71px' }}
                   >
-                    Enviar datos de {props.persona}
+                    Guardar
                   </Button>
                 </form>
               </Paper>

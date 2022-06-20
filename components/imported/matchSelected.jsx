@@ -1,6 +1,6 @@
 import { formLabelClasses, Typography } from "@mui/material";
 import { Grid } from "@mui/material";
-import { useTheme } from "@emotion/react";
+import { useTheme } from "@mui/material";
 import { useMediaQuery, Box, Container, Button } from "@mui/material";
 
 import { Dialog, DialogContent } from "@mui/material";
@@ -74,20 +74,12 @@ const MatchSelected = (props) => {
         </DialogContent>
       </Dialog>
       {matches ? (
-        <Grid container sx={{ marginTop: "10px" }}>
+        <Grid container sx={{ marginTop: "50px" }}>
           <Grid item xs={matchesmd ? 3 : 12}>
-            <img src={props.event.banner} style={{ maxWidth: "150px" }} />
+            <img src={props.event.banner} style={{ maxWidth: "235px" }} />
           </Grid>
           <Grid item xs={matchesmd ? 5 : 12}>
-            <Typography
-              sx={{
-                marginBottom: "10px",
-                fontSize: "1.125rem",
-                fontWeight: "700",
-              }}
-            >
-              Jornada 1
-            </Typography>
+            
             <Typography
               sx={{
                 marginBottom: "10px",
@@ -181,20 +173,7 @@ const MatchSelected = (props) => {
               </Typography>
             </Box>
 
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: matchesmd ? "end" : "start",
-                marginRight: "10px",
-                color: "#2AD263",
-                marginTop: "20px",
-
-                // textAlign: matchesmd ? "end" : "start",
-              }}
-            >
-              <ErrorOutlineIcon />
-              <Typography>Fecha y hora confirmada</Typography>
-            </Box>
+            
           </Grid>
         </Grid>
       ) : (
