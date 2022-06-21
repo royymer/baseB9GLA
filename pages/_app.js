@@ -12,10 +12,10 @@ import "styles/tailwind.css";
 Router.events.on("routeChangeStart", (url) => {
   console.log(`Loading: ${url}`);
   document.body.classList.add("body-page-transition");
-  ReactDOM.render(
+  /* ReactDOM.render(
     <PageChange path={url} />,
     document.getElementById("page-transition")
-  );
+  ); */
 });
 Router.events.on("routeChangeComplete", () => {
   ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));

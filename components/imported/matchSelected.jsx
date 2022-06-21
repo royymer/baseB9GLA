@@ -142,7 +142,7 @@ const MatchSelected = (props) => {
               sx={{
                 display: "flex",
                 justifyContent: matchesmd ? "end" : "start",
-                marginRight: "10px",
+                marginRight: "70px",
               }}
               onClick={() => router.back()}
             >
