@@ -3,6 +3,7 @@ import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import SettingsBackupRestoreIcon from "@mui/icons-material/SettingsBackupRestore";
 import { Container, Typography, Box, TextField, MenuItem } from "@mui/material";
 import { useState } from "react";
+import SeatMap  from "../SeatMap/SeatMap";
 
 const SeatMapMain = () => {
   const [leyenda, setLeyenda] = useState("true");
@@ -28,24 +29,6 @@ const SeatMapMain = () => {
                 },
             }}
           >
-            <TextField
-              select
-              label="LEYENDA"
-              value={leyenda}
-              onChange={handleChangeLeyenda}
-              defaultValue="DASDDASD"
-              sx={{ maxWidth: "150px", boxShadow: 3 }}
-            >
-              <MenuItem value="Leyenda1">Leyenda1</MenuItem>
-              <MenuItem value="Leyenda2">Leyenda2</MenuItem>
-              <MenuItem value="Leyenda3">Leyenda3</MenuItem>
-              <MenuItem value="Leyenda4">Leyenda4</MenuItem>
-              <MenuItem value="Leyenda5">Leyenda5</MenuItem>
-              <MenuItem value="Leyenda6">Leyenda6</MenuItem>
-              <MenuItem value="Leyenda7">Leyenda7</MenuItem>
-              <MenuItem value="Leyenda8">Leyenda8</MenuItem>
-              <MenuItem value="Leyenda9">Leyenda9</MenuItem>
-            </TextField>
           </Box>
           <Container
             sx={{
@@ -54,10 +37,7 @@ const SeatMapMain = () => {
               alignItems: "center",
             }}
           >
-            <img
-              src="https://png.pngitem.com/pimgs/s/49-498069_talk-about-random-wiki-shy-guy-mario-hd.png"
-              style={{ marginBottom: "200px" }}
-            />
+            <SeatMap />
           </Container>
           <Box>
             <Box
