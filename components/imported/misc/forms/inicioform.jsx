@@ -42,11 +42,19 @@ import { useRouter } from "next/router";
 import CloseIcon from "@mui/icons-material/Close";
 
 const InicioForm = (props) => {
-  
+
   const [isDialogInicioOpen, setIsDialogInicioOpen] = useState(false)
   const [isDialogRegistroOpen, setIsDialogRegistroOpen] = useState(false)
   const [isRegisterConfirmOpen, setIsRegisterConfirmOpen] = useState(false)
   const [isPasswordConfirmOpen, setIsPasswordConfirmOpen] = useState(false)
+
+  const [values, setValues] = React.useState({
+    amount: "",
+    password: "",
+    weight: "",
+    weightRange: "",
+    showPassword: false,
+  });
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -56,8 +64,19 @@ const InicioForm = (props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm();
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   ///DATOS
   const { isOpen, onClose } = props;
@@ -66,20 +85,23 @@ const InicioForm = (props) => {
     console.log("6a");
   };
 
-  const login = async () =>{
-    try {
-      let data = {
-        email: email,
-        password: password
-      }
+  const login = async () => {
+    console.log(isValid)
+    if (isValid) {
+      try {
+        let data = {
+          email: email,
+          password: password
+        }
 
-      let { status, response } = await userService.login(data);
+        let { status, response } = await userService.login(data);
 
-      if(status === 200){
-        localStorage.setItem("token", response.token);
+        if (status === 200) {
+          localStorage.setItem("token", response.token);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
   }
 
@@ -103,7 +125,7 @@ const InicioForm = (props) => {
 
           <DialogContent>
             <DialogContentText>
-              <form onSubmit={handleSubmit(onSubmit)}>
+              <form onSubmit={handleSubmit(login)}>
                 <Grid container flexDirection="column">
                   <Typography sx={{ marginBottom: "10px" }}>
                     Correo electrónico
@@ -118,12 +140,12 @@ const InicioForm = (props) => {
                     helperText={
                       errors.correo && <p>El campo correo es requerido</p>
                     }
-                    onChange={(e)=>setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
 
-                  <Typography sx={{ marginBottom: "10px" }}>
+                  {/*  <Typography sx={{ marginBottom: "10px" }}>
                     Contraseña
-                  </Typography>
+                  </Typography> */}
                   {/* <TextField
                     sx={{ marginBottom: "50px" }}
                     name="Contrasena"
@@ -136,7 +158,59 @@ const InicioForm = (props) => {
                     }
                   /> */}
 
-                  <TextField
+
+                  <Typography sx={{ marginBottom: "10px" }}>
+                    Contraseña
+                  </Typography>
+                  <FormControl sx={{ marginBottom: "20px" }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-password">
+                      Ingrese contrasena
+                    </InputLabel>
+                    <OutlinedInput
+                      name="password"
+                      label="Ingrese su contrasena"
+                      variant="outlined"
+                      {...register("password", {
+                        required: {
+                          value: true,
+                          message: "Campo requerido",
+                        },
+
+                      })}
+                      error={errors.password}
+                      id="outlined-adornment-password"
+                      type={values.showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            sx={{ color: " #22BDFF" }}
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {values.showPassword ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                    <FormHelperText>
+                      {errors.password && (
+                        <p style={{ color: "red" }}>
+                          {errors.password.message}
+                        </p>
+                      )}
+                    </FormHelperText>
+                  </FormControl>
+
+
+                  {/*  <TextField
                     sx={{ marginBottom: "10px" }}
                     name="password"
                     variant="outlined"
@@ -146,7 +220,7 @@ const InicioForm = (props) => {
                     helperText={
                       errors.password && <p>El campo contraseña es requerido</p>
                     }
-                    onChange={(e)=>setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                   <Box
                     sx={{
@@ -163,12 +237,12 @@ const InicioForm = (props) => {
                     <ErrorOutlineIcon />
                     <Typography>Olvide mi contraseña</Typography>
                   </Box>
-
+ */}
                   <Button
                     type="submit"
                     variant="contained"
                     sx={{ backgroundColor: "#FECC1D", marginBottom: "30px" }}
-                    onClick={()=>login()}
+                    onClick={() => login()}
                   >
                     Iniciar sesión{" "}
                   </Button>
