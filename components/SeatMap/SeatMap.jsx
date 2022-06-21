@@ -22,22 +22,69 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
-/////fin para modal
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
-//Modal full
-import FullScreenDialog from "./Dialog/dialiog";
+function FullScreenDialog(opcion) {
+    const [open, setOpen] = React.useState(opcion);
 
-const customStyles = {
-    content: {
-        top: "50%",
-        left: "50%",
-        right: "auto",
-        bottom: "auto",
-        marginRight: "-50%",
-        transform: "translate(-50%, -50%)"
-    }
+    React.useEffect(() => {
+        console.log(open)
+    }, [])
+
+    const handleClickOpen = () => {
+        setOpen(true)
+    };
+
+    const handleClose = () => {
+        setOpen(false)
+    };
+
+    return (
+        <div>
+            <Dialog
+                fullScreen
+                open={open}
+                onClose={handleClose}
+                TransitionComponent={Transition}
+            >
+                <AppBar sx={{ position: 'relative' }}>
+                    <Toolbar>
+                        <IconButton
+                            edge="start"
+                            color="inherit"
+                            onClick={handleClose}
+                            aria-label="close"
+                        >
+                            <CloseIcon />
+                        </IconButton>
+                        <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                            Salir
+                        </Typography>
+                        <Button autoFocus color="inherit" onClick={handleClose}>
+                            Guardar
+                        </Button>
+                    </Toolbar>
+                </AppBar>
+                <List>
+                    <ListItem>
+                        <ListItemText primary="Aquí va la imagen" />
+                    </ListItem>
+                    <Divider />
+                    <ListItem button>
+                        <ListItemText
+                            primary="Aquí va la disponibilidad"
+                            secondary="Tethys"
+                        />
+                    </ListItem>
+                </List>
+            </Dialog>
+        </div>
+    )
 }
+
 
 const SeatMap = () => {
     const [seleccion, setSeleccion] = useState(false);
@@ -53,9 +100,6 @@ const SeatMap = () => {
     const handleOnChange = (e) => {
         setModalIsOpen(!modalIsOpen)
         setSeleccion(!seleccion);
-        for (let i in e) {
-            console.log("valor", e[i].id);
-        }
     }
 
     useEffect(() => {
@@ -96,7 +140,7 @@ const SeatMap = () => {
                 map={TodoNuevo}
                 onChange={(e) => handleOnChange(e)}
             />
-            <FullScreenDialog opcion={modalIsOpen} setOp={setModalIsOpen} />
+           {  modalIsOpen && <FullScreenDialog />}
         </div>
 
 
