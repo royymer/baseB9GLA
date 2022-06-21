@@ -43,12 +43,12 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const InicioForm = (props) => {
   
-  const [isDialogInicioOpen, setisDialogInicioOpen] = useState(false)
+  const [isDialogInicioOpen, setIsDialogInicioOpen] = useState(false)
   const [isDialogRegistroOpen, setIsDialogRegistroOpen] = useState(false)
   const [isRegisterConfirmOpen, setIsRegisterConfirmOpen] = useState(false)
   const [isPasswordConfirmOpen, setIsPasswordConfirmOpen] = useState(false)
 
-  const [correo, setCorreo] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const router = useRouter();
@@ -61,14 +61,27 @@ const InicioForm = (props) => {
 
   ///DATOS
   const { isOpen, onClose } = props;
-  const onSubmit = async (data) => {
-    let { status, response } = await userService.login(data);
-    if (status === 200) {
-      console.log("Ingresar")
-    }
-    console.log(data);
 
+  const onSubmit = async (data) => {
+    console.log("6a");
   };
+
+  const login = async () =>{
+    try {
+      let data = {
+        email: email,
+        password: password
+      }
+
+      let { status, response } = await userService.login(data);
+
+      if(status === 200){
+        localStorage.setItem("token", response.token);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -105,6 +118,7 @@ const InicioForm = (props) => {
                     helperText={
                       errors.correo && <p>El campo correo es requerido</p>
                     }
+                    onChange={(e)=>setEmail(e.target.value)}
                   />
 
                   <Typography sx={{ marginBottom: "10px" }}>
@@ -132,6 +146,7 @@ const InicioForm = (props) => {
                     helperText={
                       errors.password && <p>El campo contraseña es requerido</p>
                     }
+                    onChange={(e)=>setPassword(e.target.value)}
                   />
                   <Box
                     sx={{
@@ -153,6 +168,7 @@ const InicioForm = (props) => {
                     type="submit"
                     variant="contained"
                     sx={{ backgroundColor: "#FECC1D", marginBottom: "30px" }}
+                    onClick={()=>login()}
                   >
                     Iniciar sesión{" "}
                   </Button>

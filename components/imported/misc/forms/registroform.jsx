@@ -29,14 +29,17 @@ import {
 
 import CloseIcon from "@mui/icons-material/Close";
 
+import { userService } from "../../../../src/services";
+
 const RegisterForm = (props) => {
   const { onClose, isOpen } = props;
-  
 
-  const [isDialogInicioOpen, setisDialogInicioOpen] = useState(false)
+
+  const [isDialogInicioOpen, setIsDialogInicioOpen] = useState(false)
   const [isDialogRegistroOpen, setIsDialogRegistroOpen] = useState(false)
   const [isRegisterConfirmOpen, setIsRegisterConfirmOpen] = useState(false)
   const [isPasswordConfirmOpen, setIsPasswordConfirmOpen] = useState(false)
+
 
   const [values, setValues] = React.useState({
     amount: "",
@@ -95,7 +98,6 @@ const RegisterForm = (props) => {
 
   const onSubmit = (data) => {
     const r = data;
-    console.log(r);
     reset();
   };
   const [firstName, setFirstName] = useState("");
@@ -105,10 +107,25 @@ const RegisterForm = (props) => {
   const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
   const [password, setPassword] = useState("");
-  // console.log(`desde registroform ${isDialogInicioOpen}`);
-  // const [pin, setPin;
 
-  // const [isDialogRegistroOpen, setIsDialogRegistroOpen] = useState(false);
+  const registrar = async () =>{
+    let data = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phone: phone,
+      password: password,
+      document: document,
+      pin: pin
+    }
+    let {status, response} = await userService.addUser(data);
+    if(status === 200){
+      alert("El usuario ha sido registrado");
+    }else{
+      console.log(response)
+    }
+  }
+
   return (
     <>
       {/* ///REGISTER DIALOG */}
@@ -248,8 +265,8 @@ const RegisterForm = (props) => {
                       error={errors.password}
                       id="outlined-adornment-password"
                       type={values.showPassword ? "text" : "password"}
-                      value={values.password}
-                      onChange={handleChange("password")}
+                      value={password}
+                      onChange={(e)=>setPassword(e.target.value)}
                       endAdornment={
                         <InputAdornment position="end">
                           <IconButton
@@ -430,17 +447,7 @@ const RegisterForm = (props) => {
                     type="submit"
                     variant="contained"
                     sx={{ backgroundColor: "#FECC1D", marginBottom: "30px" }}
-                    onClick={() => {
-                      setFirstName("");
-                      setLastName("");
-                      setPhone("");
-                      setDocument("");
-                      setEmail("");
-                      setPassword("");
-                      setValues({ ...values, password: "" });
-                      open = "false";
-                      // setValuesNew({ ...valuesNew, password: "" });
-                    }}
+                    onClick={() => registrar()}
                   >
                     Registrarse{" "}
                   </Button>
