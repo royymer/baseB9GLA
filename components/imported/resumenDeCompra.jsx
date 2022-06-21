@@ -1,7 +1,8 @@
 import { Typography, Container, Grid, Button } from "@mui/material";
+import Link from "next/link";
 import { useState } from "react";
 
-const ResumenDeCompra = () => {
+const ResumenDeCompra = ({ matchid }) => {
   const [bookingFees, setBookingFees] = useState("15$");
   const [total, setTotal] = useState("0$");
   return (
@@ -32,18 +33,20 @@ const ResumenDeCompra = () => {
               <Typography sx={{ padding: "25px" }}>Total {total}</Typography>
             </Grid>
           </Grid>
-          <Grid item xs={12} sx={{ textAlign: "center" }}>
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "#FECC1D",
-                fontSize: "1.125rem",
-                marginTop: "50px",
-              }}
-            >
-              Comprar
-            </Button>
-          </Grid>
+          <Link href={`/boletos/checkout/${matchid}`} >
+            <Grid item xs={12} sx={{ textAlign: "center" }}>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "#FECC1D",
+                  fontSize: "1.125rem",
+                  marginTop: "50px",
+                }}
+              >
+                Comprar
+              </Button>
+            </Grid>
+          </Link>
         </Grid>
       </Container>
     </>

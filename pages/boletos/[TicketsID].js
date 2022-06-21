@@ -3,6 +3,8 @@ import { Grid } from "@mui/material";
 import { useTheme } from "@mui/material";
 import { useMediaQuery, Box, Container, Button } from "@mui/material";
 
+import { useEffect, useState } from "react";
+
 import MatchSelected from "../../components/imported/matchSelected";
 
 import SeatMapMain from "../../components/imported/seatMapMain";
@@ -11,25 +13,43 @@ import TicketPicker from "components/imported/TicketPicker";
 import Header from "components/imported/Header";
 import Footer from "components/Footers/Footer";
 import Template from "components/imported/misc/Template";
+import Spinner from 'components/imported/misc/Spinner'
+
+
+import { eventService } from "src/services";
 
 
 const drawerStyle = {};
 
 const Details = ({ juegos }) => {
-  // const [age, setAge] = useState("");
+  
+  
+  const [matchinfo, setMatchinfo] = useState(null)
+  const [loading, setLoading] = useState(false)
 
-  // const handleChange = (event) => {
-  //   setAge(event.target.value);
-  // };
 
   const router = useRouter();
-  const boletosID = router.query.boletosID;
-  const itemFiltrado = juegos.docs.filter((item) => {
-    return item._id == boletosID;
-  });
+  const boletosID = router.query.TicketsID;
+  console.log(boletosID)
+  const itemFiltrado = []
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("lg"));
   const matchesmd = useMediaQuery(theme.breakpoints.up("md"));
+
+   useEffect(() => {
+     
+    async function init(){
+      setLoading(true)
+      const { response, status } = await eventService.getEvent({id:boletosID})
+      setLoading(false)
+      console.log(response)
+      
+      if (status === 200){
+        setMatchinfo(response)
+      }
+    }
+    init()
+  }, []) 
 
   return (
     <>
@@ -38,18 +58,20 @@ const Details = ({ juegos }) => {
         <Grid container>
           <Grid item xs={3} sx={{ borderRightColor: "black" }}>
             
-              <div style={{marginLeft: '50px', marginTop: '220px'}} >
+              <div style={{marginLeft: '50px', marginTop: '50px'}} >
                 <TicketPicker />
               </div>
             
           </Grid>
+          <Spinner loading={loading}/>
+
+          {matchinfo&&
           <Grid item xs={matches ? 9 : 12}>
-            {itemFiltrado.map((item) => {
-              return <MatchSelected event={item} />;
-            })}
+            <MatchSelected event={matchinfo} />
+            
             <SeatMapMain />
-            <ResumenDeCompra />
-          </Grid>
+            <ResumenDeCompra matchid={boletosID} />
+          </Grid>}
         </Grid>
       </div>
     </Template>
@@ -57,15 +79,19 @@ const Details = ({ juegos }) => {
     </>
   );
 };
-export async function getServerSideProps(context) {
+ /* export async function getServerSideProps(context) {
+    
+
   const res = await fetch(
-    "https://b9-ticketing-api.herokuapp.com/api/v1/events/629a64142383372c770c64a2?page=1&limit=10"
+    `https://b9-ticketing-api.herokuapp.com/api/v1/events/?page=1&limit=10`
   );
   const data = await res.json();
 
   return {
     props: { juegos: data },
   };
-}
+}  */
+
+
 
 export default Details;

@@ -16,7 +16,9 @@ import { useMediaQuery } from "@mui/material";
 import { Paper } from "@mui/material";
 import { Divider } from "@mui/material";
 import { format } from "date-fns";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import Spinner from 'components/imported/misc/Spinner'
+
+
 const locale = require("date-fns/locale");
 
 const DataDisplay = (props) => {
@@ -29,6 +31,8 @@ const DataDisplay = (props) => {
     useState(false);
   const [cargarMas, setCargarMas] = useState(3);
   const [partidos, setPartidos] = useState("");
+  const [loading, setLoading] = useState(false)
+
 
   const [datadisplaySize, setdatadisplaySize] = useState(false);
 
@@ -49,89 +53,24 @@ const DataDisplay = (props) => {
 
   return (
     <Container sx={{ marginTop: "50px" }}>
-      <Typography variant="h5" sx={{ marginBottom: "50px", fontWeight: 700 }}>
+      <Typography variant="h5" sx={{ marginBottom: "110px", fontWeight: 700 }}>
         {" "}
-        Todos los partidos
+        Todos los eventos
       </Typography>
-
+        
       <Box
         sx={{
           margin: "20px 0",
           marginBottom: "30px",
           display: "flex",
           justifyContent: "space-between",
+          marginTop: '-101px',
+          marginLeft: '206px'
         }}
       >
-        <Box sx={{ width: "300px", height: "48px", marginBottom: "50px" }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              Seleccione sus partidos
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={partidos}
-              label="Age"
-              onChange={handleChange}
-            >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
 
-        {matchesmd ? (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <SplitscreenIcon
-              sx={{
-                margin: "20px",
-                backgroundColor: rowbackgroundColorButton
-                  ? "#22BDFF"
-                  : "#EEEEEE",
-                fontSize: "30px",
-                padding: "5px",
-                borderRadius: "5px",
-                color: rowbackgroundColorButton ? "white" : "black",
-              }}
-              onClick={() => {
-                setrowBackgroundColorButton(!rowbackgroundColorButton);
-                setgridBackgroundColorButton(
-                  rowbackgroundColorButton &&
-                    setgridBackgroundColorButton(false)
-                );
-                setdatadisplaySize(!datadisplaySize);
-              }}
-            />
 
-            <GridViewIcon
-              sx={{
-                margin: "20px",
-                backgroundColor: gridbackgroundColorButton
-                  ? "#22BDFF"
-                  : "#EEEEEE",
-                fontSize: "30px",
-                padding: "5px",
-                borderRadius: "5px",
-                color: gridbackgroundColorButton ? "white" : "black",
-              }}
-              onClick={() => {
-                setgridBackgroundColorButton(!gridbackgroundColorButton);
-                setrowBackgroundColorButton(
-                  gridbackgroundColorButton &&
-                    setrowBackgroundColorButton(false)
-                );
-
-                setdatadisplaySize(!datadisplaySize);
-              }}
-            />
-          </Box>
-        ) : null}
+        
       </Box>
       <Divider
         sx={{
@@ -193,20 +132,7 @@ const DataDisplay = (props) => {
                       {DayMayus}, {horaNumero}:{minutes}
                       {horaAMPM}
                     </Typography>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: matchesmd ? "start" : "center",
-                        marginRight: "10px",
-                        color: "#2AD263",
-                        marginTop: "20px",
-
-                        // textAlign: matchesmd ? "end" : "start",
-                      }}
-                    >
-                      <ErrorOutlineIcon />
-                      <Typography>Fecha y hora confirmada</Typography>
-                    </Box>
+                    
                   </Grid>
                   <Grid
                     item
@@ -241,7 +167,7 @@ const DataDisplay = (props) => {
                         : "center",
                     }}
                   >
-                    <img src={juego.banner} style={{ maxWidth: "250px" }} />
+                    <img src={juego.banner} style={{ maxWidth: "250px", marginTop:'24px' }} />
                   </Grid>
                   <Grid
                     item
@@ -263,7 +189,7 @@ const DataDisplay = (props) => {
                             variant="contained"
                             disableRipple
                             size="small"
-                            sx={{
+                            sx={{marginTop:'46px',
                               backgroundColor: "#FECC1D",
                               "&& .hover": {
                                 backgroundColor: "none",

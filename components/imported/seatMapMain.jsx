@@ -7,7 +7,6 @@ import SeatMap  from "../SeatMap/SeatMap";
 
 const SeatMapMain = () => {
   const [leyenda, setLeyenda] = useState("true");
-  console.log(leyenda);
   const handleChangeLeyenda = (event) => {
     setLeyenda(event.target.value);
   };

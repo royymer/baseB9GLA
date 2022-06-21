@@ -60,7 +60,6 @@ export default function Header() {
     formState: { errors },
   } = useForm();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  console.log(isDialogInicioOpen);
 
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("md"));
@@ -85,82 +84,14 @@ export default function Header() {
         }}
       >
         <Toolbar>
+          <Link href={'/home'} >
           <Box sx={{ flexGrow: 1 }}>
-            <img src="../assets/logo1.png" />
+            <img src="/assets/logo1.png" style={{cursor:'pointer'}} />
           </Box>
+          </Link>
           {matches ? (
             <>
-              <Box sx={{ display: "flex", mr: 20 }}>
-                <Link href={"/"}>
-                  <Box
-                    sx={{
-                      margin: "10px",
-                      "&:hover": {
-                        color: "#FECC1D",
-                      },
-                    }}
-                  >
-                    <a>
-                      <Button
-                        sx={{
-                          ...fontStyles,
-                        }}
-                        onClick={() => {
-                          setIsDrawerOpen(false);
-                        }}
-                      >
-                        Inicio
-                      </Button>
-                    </a>
-                  </Box>
-                </Link>
-                <Link href={"/boletos"}>
-                  <Box
-                    sx={{
-                      margin: "10px",
-                      "&:hover": {
-                        color: "#FECC1D",
-                      },
-                    }}
-                  >
-                    <a>
-                      <Button
-                        sx={{
-                          ...fontStyles,
-                        }}
-                        onClick={() => {
-                          setIsDrawerOpen(false);
-                        }}
-                      >
-                        Boletos
-                      </Button>
-                    </a>
-                  </Box>
-                </Link>
-                <Link href={"/tienda"}>
-                  <Box
-                    sx={{
-                      margin: "10px",
-                      "&:hover": {
-                        color: "#FECC1D",
-                      },
-                    }}
-                  >
-                    <a>
-                      <Button
-                        sx={{
-                          ...fontStyles,
-                        }}
-                        onClick={() => {
-                          setIsDrawerOpen(false);
-                        }}
-                      >
-                        Tienda
-                      </Button>
-                    </a>
-                  </Box>
-                </Link>
-              </Box>
+             
 
               <Box sx={{ ...buttonStyles }}>
                 <Button
@@ -200,85 +131,10 @@ export default function Header() {
                   onClose={() => setIsDrawerOpen(false)}
                 >
                   <Box sx={{ mainBoxStyles }}>
-                    <Link href={"/"}>
-                      <Box
-                        sx={{
-                          margin: "10px",
-                          "&:hover": {
-                            color: "yellow",
-                          },
-                        }}
-                      >
-                        <a>
-                          <Button
-                            sx={{
-                              color: "#fff",
-                              "&:hover": {
-                                color: "yellow",
-                              },
-                            }}
-                            onClick={() => {
-                              setIsDrawerOpen(false);
-                            }}
-                          >
-                            Inicio
-                          </Button>
-                        </a>
-                      </Box>
-                    </Link>
+                    
 
-                    <Link href={"/boletos"}>
-                      <Box
-                        sx={{
-                          margin: "10px",
-                          "&:hover": {
-                            color: "#FECC1D",
-                          },
-                        }}
-                      >
-                        <a>
-                          <Button
-                            sx={{
-                              color: "#fff",
-                              "&:hover": {
-                                color: "yellow",
-                              },
-                            }}
-                            onClick={() => {
-                              setIsDrawerOpen(false);
-                            }}
-                          >
-                            Boletos
-                          </Button>
-                        </a>
-                      </Box>
-                    </Link>
-                    <Link href={"/tienda"}>
-                      <Box
-                        sx={{
-                          margin: "10px",
-                          "&:hover": {
-                            color: "yellow",
-                          },
-                        }}
-                      >
-                        <a>
-                          <Button
-                            sx={{
-                              color: "#fff",
-                              "&:hover": {
-                                color: "yellow",
-                              },
-                            }}
-                            onClick={() => {
-                              setIsDrawerOpen(false);
-                            }}
-                          >
-                            Tienda
-                          </Button>
-                        </a>
-                      </Box>
-                    </Link>
+                    
+                    
                     <Button
                       style={{
                         margin: "10px",

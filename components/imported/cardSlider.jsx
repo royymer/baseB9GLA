@@ -62,7 +62,7 @@ const CardSlider = (props) => {
       }}
     >
       
-        <>
+        {/* <>
           <Box
             onClick={() => slider?.current?.slickPrev()}
             sx={{
@@ -102,9 +102,9 @@ const CardSlider = (props) => {
           >
             <ArrowForwardIosIcon sx={{ fontSize: "15px" }} />
           </Box>
-        </>
-      ) 
-      <Slider arrows={false} ref={slider} {...settings}>
+        </> */}
+      
+      {/* <Slider arrows={false} ref={slider} {...settings}>
         {data.map((item) => {
           const Day = format(new Date(item.start.date), "EEEE", {
             locale: locale.es,
@@ -131,7 +131,7 @@ const CardSlider = (props) => {
             locale: locale.es,
           });
           return (
-            <Card>
+            <Card >
               <CardContent sx={{ textAlign: "center" }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography sx={{ fontSize: "0.813rem", color: "#727272" }}>
@@ -162,7 +162,7 @@ const CardSlider = (props) => {
             </Card>
           );
         })}
-      </Slider>
+      </Slider> */}
     </Box>
   );
 };
