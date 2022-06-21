@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import FormContext from "./misc/formContext";
@@ -48,11 +49,24 @@ const MenuIconNew = () => {
   return <img src="../assets/fixedIcon.svg" />;
 };
 
+
+
 export default function Header() {
   
   const [isDialogInicioOpen, setIsDialogInicioOpen] = useState(false)
   const [isDialogRegistroOpen, setIsDialogRegistroOpen] = useState(false)
- 
+
+  const [isLogged, setIsLogged] = useState(false)
+
+
+  useEffect(() => {
+    if (localStorage.getItem('user')){
+      setIsLogged(true)
+    }
+  
+    
+  }, [])
+  
 
   const {
     register,
@@ -72,6 +86,7 @@ export default function Header() {
         onClose={() => setIsDialogRegistroOpen(false)}
       />
       <InicioForm
+        setIsLogged={(isLogged)=> {console.log(isLogged); setIsLogged(isLogged)} }
         isOpen={isDialogInicioOpen}
         onClose={() => setIsDialogInicioOpen(false)}
       />
@@ -89,7 +104,19 @@ export default function Header() {
             <img src="/assets/logo1.png" style={{cursor:'pointer'}} />
           </Box>
           </Link>
-          {matches ? (
+
+          {isLogged && <Box sx={{ ...buttonStyles }}>
+                <Button
+                  color="inherit"
+                  variant="outlined"
+                  sx={{ color: "#FECC1D", marginRight: "10px" }}
+                  >
+                  Hola, {`${JSON.parse(localStorage.getItem('user')).firstName}`}
+                </Button>
+                
+              </Box> }
+
+          {matches && isLogged==false ? (
             <>
              
 
