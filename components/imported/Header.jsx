@@ -50,7 +50,7 @@ const MenuIconNew = () => {
 
 export default function Header() {
   
-  const [isDialogInicioOpen, setisDialogInicioOpen] = useState(false)
+  const [isDialogInicioOpen, setIsDialogInicioOpen] = useState(false)
   const [isDialogRegistroOpen, setIsDialogRegistroOpen] = useState(false)
  
 
@@ -74,7 +74,7 @@ export default function Header() {
       />
       <InicioForm
         isOpen={isDialogInicioOpen}
-        onClose={() => setIsDialogInicioOpen(false)}
+        onClose={() => setIsDialogRegistroOpen(false)}
       />
 
       <AppBar

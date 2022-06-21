@@ -1,6 +1,6 @@
 import { urls } from "../../constants";
 
-const addUser = async ({ data }) => {
+const addUser = async ( data ) => {
     const request = await fetch(`${urls.addUser}`, {
         method: "POST",
         headers: {
