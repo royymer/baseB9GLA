@@ -24,6 +24,10 @@ const organizarConsultas = (arr) => {
             }
         }
     }
+    // for(let i in arrayConsultaOrdenada){
+    //     console.log(arrayConsultaOrdenada[i]);
+    // }
+
     return arrayConsultaOrdenada;
 }
 

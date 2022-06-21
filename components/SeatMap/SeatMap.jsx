@@ -9,7 +9,12 @@ import { eventService } from "../../src/services";
 //import generateSVGmap from "./functions/generateSVGmap";
 import organizarConsultas from "./functions/organizarConsulta";
 
-//para moda
+//imagenes de las secciones
+import Zona1 from "./zonas/zona1";
+import Zona2 from "./zonas/zona2";
+import Zona3 from "./zonas/zona3";
+
+//para modal
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
@@ -27,64 +32,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function FullScreenDialog(opcion) {
-    const [open, setOpen] = React.useState(opcion);
-
-    React.useEffect(() => {
-        console.log(open)
-    }, [])
-
-    const handleClickOpen = () => {
-        setOpen(true)
-    };
-
-    const handleClose = () => {
-        setOpen(false)
-    };
-
-    return (
-        <div>
-            <Dialog
-                fullScreen
-                open={open}
-                onClose={handleClose}
-                TransitionComponent={Transition}
-            >
-                <AppBar sx={{ position: 'relative' }}>
-                    <Toolbar>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            onClick={handleClose}
-                            aria-label="close"
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                            Salir
-                        </Typography>
-                        <Button autoFocus color="inherit" onClick={handleClose}>
-                            Guardar
-                        </Button>
-                    </Toolbar>
-                </AppBar>
-                <List>
-                    <ListItem>
-                        <ListItemText primary="Aquí va la imagen" />
-                    </ListItem>
-                    <Divider />
-                    <ListItem button>
-                        <ListItemText
-                            primary="Aquí va la disponibilidad"
-                            secondary="Tethys"
-                        />
-                    </ListItem>
-                </List>
-            </Dialog>
-        </div>
-    )
-}
-
+var zonaSeleccionada;
 
 const SeatMap = () => {
     const [seleccion, setSeleccion] = useState(false);
@@ -92,14 +40,22 @@ const SeatMap = () => {
     const [xr, setXr] = useState()
     const locations = [];
 
+    //zona seleccionada que zona es
+    const [queZ, setQueZ] = useState();
+
     //para consulta de la disponibilidad
     var arrayConsultaOrdenada = [];
     const [arrayAreglado, setArrayArreglado] = useState();
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
+    //emigrado
+    const [open, setOpen] = React.useState(true);
+
     const handleOnChange = (e) => {
+        if (e[0] !== undefined) {
+            setQueZ(e[0].id)
+        }
         setModalIsOpen(!modalIsOpen)
-        setSeleccion(!seleccion);
     }
 
     useEffect(() => {
@@ -129,6 +85,74 @@ const SeatMap = () => {
         init();
     }, []);
 
+    function FullScreenDialog(opcion, queZ) {
+        const handleClose = () => {
+            setOpen(false)
+            setModalIsOpen(false)
+        };
+
+        return (
+            <div>
+                <Dialog
+                    fullScreen
+                    open={open}
+                    onClose={handleClose}
+                    TransitionComponent={Transition}
+                >
+                    <AppBar sx={{ position: 'relative' }}>
+                        <Toolbar>
+                            <IconButton
+                                edge="start"
+                                color="inherit"
+                                onClick={handleClose}
+                                aria-label="close"
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                                Salir
+                            </Typography>
+                            <Button autoFocus color="inherit" onClick={handleClose}>
+                                Guardar
+                            </Button>
+                        </Toolbar>
+                    </AppBar>
+                    <List>
+                        <ListItem>
+                            <ListItemText primary="Aquí va la imagen" />
+                            <div
+                                style={{
+                                    aligItem: "center"
+                                }}
+                            >
+                                {
+                                    queZ === "test_21" ?
+                                        <Zona1 />
+                                        : queZ === "test_22" ?
+                                            <Zona2 />
+                                            :
+                                            queZ === "test_23" ?
+                                            <Zona3 />
+                                            :
+                                            null
+                                }
+
+                            </div>
+
+                        </ListItem>
+                        <Divider />
+                        <ListItem button>
+                            <ListItemText
+                                primary="Aquí va la disponibilidad"
+                                secondary="Tethys"
+                            />
+                        </ListItem>
+                    </List>
+                </Dialog>
+            </div>
+        )
+    }
+
     return (
         <div
             style={{
@@ -140,7 +164,7 @@ const SeatMap = () => {
                 map={TodoNuevo}
                 onChange={(e) => handleOnChange(e)}
             />
-           {  modalIsOpen && <FullScreenDialog />}
+            {modalIsOpen && FullScreenDialog(open, queZ)}
         </div>
 
 
