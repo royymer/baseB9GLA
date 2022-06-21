@@ -72,23 +72,23 @@ const LayoutBanner = () => {
           />
         </Box>
 
-        <Slider arrows={false} ref={slider} {...settings}>
-          <div>
+        <Slider arrows={false} ref={slider} {...settings} style={{width:'100%'}} >
+          <div style={{maxHeight: '30vh',}} > 
             <img
               src="../assets/BannerGladiadores.jpg"
-              style={{ height: "40vh", width: "100%", objectFit: "cover" }}
+              style={{ height: "30vh", width: "100%", objectFit: "cover" }}
             />
           </div>
-          <div>
+          <div style={{maxHeight: '30vh',}} >
             <img
               src="../assets/mainimage.png"
-              style={{ height: "40vh", width: "100%", objectFit: "cover" }}
+              style={{height: "30vh", width: "100%", objectFit: "cover" }}
             />
           </div>
-          <div>
+          <div style={{maxHeight: '30vh',}} >
             <img
               src="../assets/WorkGladiadores.jpg"
-              style={{ height: "40vh", width: "100%", objectFit: "cover" }}
+              style={{ height: "30vh", width: "100%", objectFit: "cover" }}
             />
           </div>
         </Slider>

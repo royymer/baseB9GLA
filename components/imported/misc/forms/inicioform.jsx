@@ -48,6 +48,7 @@ const InicioForm = (props) => {
   const [isRegisterConfirmOpen, setIsRegisterConfirmOpen] = useState(false)
   const [isPasswordConfirmOpen, setIsPasswordConfirmOpen] = useState(false)
 
+
   const [values, setValues] = React.useState({
     amount: "",
     password: "",
@@ -59,11 +60,15 @@ const InicioForm = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const activateButton = email != null && email.trim().length > 0;
+
+
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid },
   } = useForm();
 
@@ -81,27 +86,30 @@ const InicioForm = (props) => {
   ///DATOS
   const { isOpen, onClose } = props;
 
+  /* const onSubmit = ({ email, password }) => {
+    console.log(data)
+    const r = data;
+    reset()
+  }; */
+
   const onSubmit = async (data) => {
-    console.log("6a");
-  };
-
-  const login = async () => {
     console.log(isValid)
-    if (isValid) {
-      try {
-        let data = {
-          email: email,
-          password: password
-        }
+    console.log(data)
+    if (data != undefined) {
+    try {
+      /* let data = {
+        email: email,
+        password: password
+      } */
 
-        let { status, response } = await userService.login(data);
+      let { status, response } = await userService.login(data);
 
-        if (status === 200) {
-          localStorage.setItem("token", response.token);
-        }
-      } catch (error) {
-        console.log(error);
+      if (status === 200) {
+        localStorage.setItem("token", response.token);
       }
+    } catch (error) {
+      console.log(error);
+    }
     }
   }
 
@@ -125,23 +133,25 @@ const InicioForm = (props) => {
 
           <DialogContent>
             <DialogContentText>
-              <form onSubmit={handleSubmit(login)}>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container flexDirection="column">
                   <Typography sx={{ marginBottom: "10px" }}>
                     Correo electrónico
                   </Typography>
                   <TextField
                     sx={{ marginBottom: "20px" }}
-                    name="name"
+                    //name="email"
                     variant="outlined"
+                    //value={email}
                     label="Ingrese su correo electronico"
-                    {...register("email", { required: true })}
-                    error={errors.correo}
-                    helperText={
-                      errors.correo && <p>El campo correo es requerido</p>
-                    }
+                    {...register("email", {
+                      required: { value: true, message: 'Correo invalido' },
+                    })}
+
                     onChange={(e) => setEmail(e.target.value)}
                   />
+
+                  {errors.email && <span> {errors.email.message} </span>}
 
                   {/*  <Typography sx={{ marginBottom: "10px" }}>
                     Contraseña
@@ -174,7 +184,7 @@ const InicioForm = (props) => {
                         required: {
                           value: true,
                           message: "Campo requerido",
-                        },
+                        }, minLength: { value: 6, message: 'Ingresa la contrasena' }
 
                       })}
                       error={errors.password}
@@ -242,7 +252,7 @@ const InicioForm = (props) => {
                     type="submit"
                     variant="contained"
                     sx={{ backgroundColor: "#FECC1D", marginBottom: "30px" }}
-                    onClick={() => login()}
+                    onClick={() => onSubmit()}
                   >
                     Iniciar sesión{" "}
                   </Button>
