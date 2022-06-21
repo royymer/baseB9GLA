@@ -50,12 +50,12 @@ const BoletosForm = (props) => {
   return (
     <>
       {mostrar && (
-        <Box sx={{ maxWidth: "300px" }}>
+        <Box sx={{ maxWidth: "300px",minWidth:'246px' }}>
           <List>
             <ListItem>
               <ListItemButton onClick={() => setOpen(!open)}>
                 <ListItemIcon>{">"}</ListItemIcon>
-                <ListItemText primary={`Información personal ${props.persona}`} />
+                <ListItemText primary={`Información personal ${props.persona}`} style={{minWidth:'260px'}} />
               </ListItemButton>
             </ListItem>
           </List>

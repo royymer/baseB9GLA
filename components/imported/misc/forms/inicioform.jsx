@@ -48,6 +48,9 @@ const InicioForm = (props) => {
   const [isRegisterConfirmOpen, setIsRegisterConfirmOpen] = useState(false)
   const [isPasswordConfirmOpen, setIsPasswordConfirmOpen] = useState(false)
 
+  //const [isLogged, setIsLogged] = useState(false)
+
+
 
   const [values, setValues] = React.useState({
     amount: "",
@@ -106,6 +109,8 @@ const InicioForm = (props) => {
 
       if (status === 200) {
         localStorage.setItem("token", response.token);
+        localStorage.setItem('user', JSON.stringify(response.user))
+        props.setIsLogged(true)
       }
     } catch (error) {
       console.log(error);

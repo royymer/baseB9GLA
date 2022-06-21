@@ -6,10 +6,11 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box } from "@mui/system";
 import { useTheme } from "@emotion/react";
-import { useMediaQuery } from "@mui/material";
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 const LayoutBanner = () => {
   const theme = useTheme();
+  const theneBreakpoint = useMediaQuery(theme.breakpoints.up('sm'));
 
   const settings = {
     dots: false,
@@ -19,6 +20,7 @@ const LayoutBanner = () => {
     slidesToScroll: 1,
   };
   const slider = React.useRef(null);
+
 
   return (
     <div style={{ width: "100%" }}>
@@ -73,22 +75,22 @@ const LayoutBanner = () => {
         </Box>
 
         <Slider arrows={false} ref={slider} {...settings} style={{width:'100%'}} >
-          <div style={{maxHeight: '30vh',}} > 
+          <div style={{height: '26vh',}} > 
             <img
               src="../assets/BannerGladiadores.jpg"
-              style={{ height: "30vh", width: "100%", objectFit: "cover" }}
+              style={{ height: "26vh", width: "100%", objectFit: "cover" }}
             />
           </div>
-          <div style={{maxHeight: '30vh',}} >
+          <div style={{height: '26vh',}} >
             <img
               src="../assets/mainimage.png"
-              style={{height: "30vh", width: "100%", objectFit: "cover" }}
+              style={{height: "26vh", width: "100%", objectFit: "cover" }}
             />
           </div>
-          <div style={{maxHeight: '30vh',}} >
+          <div style={{height: '26vh',}} >
             <img
               src="../assets/WorkGladiadores.jpg"
-              style={{ height: "30vh", width: "100%", objectFit: "cover" }}
+              style={{ height: "26vh", width: "100%", objectFit: "cover" }}
             />
           </div>
         </Slider>

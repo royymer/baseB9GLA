@@ -54,7 +54,7 @@ function TicketPicker() {
             numeroDePersonas += 1;
             return (
               <>
-                <BoletosForm persona={numeroDePersonas} arr={ticketforms} />
+                <BoletosForm persona={numeroDePersonas} arr={ticketforms}  />
               </>
             );
           })}
