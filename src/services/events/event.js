@@ -64,8 +64,8 @@ const getEvent = async ({ id }) => {
     }
 }
 
-const getSeatMap = async ( id, ticket ) => {
-    const request = await fetch(`${urls.getSeatMap}/${id}?tickets=${ticket}`, {
+const eventGetSeatMap = async ({ id, ticket }) => {
+    const request = await fetch(`${urls.eventGetSeatMap}/${id}?tickets=${ticket}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -101,7 +101,7 @@ const eventService = Object.freeze({
     getEvents,
     addPlanGroupToEvent,
     getEvent,
-    getSeatMap,
+    eventGetSeatMap,
     addSeatMapToEvent
 })
 

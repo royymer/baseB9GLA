@@ -1,20 +1,32 @@
 import React, { useEffect, useState } from "react";
 import ty from "./svgs/ty";
 import ty1 from "./svgs/ty1";
-import { CheckboxSVGMap } from "react-svg-map";
-import Modal from "react-modal";
-
-
+import { CheckboxSVGMap, SVGMap, RadioSVGMap } from "react-svg-map";
 //test de svg preprocesado
 import TodoNuevo from "../SeatMap/svgs/TodoNuevo";
-//import unoAh from "../SeatMap/svgs/unoAh";
-
-
 //service
 import { eventService } from "../../src/services";
 //import generateSVGmap from "./functions/generateSVGmap";
+import organizarConsultas from "./functions/organizarConsulta";
 
-import foto from "./zonas/medioa1.png"
+//para moda
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import ListItemText from '@mui/material/ListItemText';
+import ListItem from '@mui/material/ListItem';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import CloseIcon from '@mui/icons-material/Close';
+import Slide from '@mui/material/Slide';
+/////fin para modal
+
+
+//Modal full
+import FullScreenDialog from "./Dialog/dialiog";
 
 const customStyles = {
     content: {
@@ -33,63 +45,26 @@ const SeatMap = () => {
     const [xr, setXr] = useState()
     const locations = [];
 
-    //para modal
-    let subtitulo;
+    //para consulta de la disponibilidad
+    var arrayConsultaOrdenada = [];
+    const [arrayAreglado, setArrayArreglado] = useState();
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
-
-    function openModal(props) {
-        console.log("id  pasar", props);
-        setModalIsOpen(true);
-    }
-
-    function closeModal() {
-        setModalIsOpen(false);
-    }
-
-    const renderModal = () => {
-        return (
-            <Modal
-                //appElement={"#Modal"}
-                isOpen={modalIsOpen}
-                onRequestClose={closeModal}
-                style={customStyles}
-                contentLabel=""
-            >
-                <div
-                    style={{
-                        width: "600px",
-                    }}
-                >
-
-                    <button onClick={closeModal}>Cerrar</button>
-                </div>
-
-            </Modal>
-        )
-    }
-
-
     const handleOnChange = (e) => {
+        setModalIsOpen(!modalIsOpen)
         setSeleccion(!seleccion);
         for (let i in e) {
             console.log("valor", e[i].id);
-            openModal(e[i].id)
-        }
-    }
-
-    const buscarDisponibilidad = (sec) => {
-        for (let x in sec) {
-            console.log("_*_", sec[x].zones);
         }
     }
 
     useEffect(() => {
         async function init() {
-            let request0 = await eventService.getSeatMap({ id: "629a66712383372c770c64a8", ticket: "1" });
-            console.log("Disponibilidad", request0);
+            let request0 = await eventService.eventGetSeatMap({ id: "629a66712383372c770c64a8", ticket: "1" });
 
-            //let aTransformar = generateSVGmap(ty1, "ty1", "ty1_");
+            let sectores = request0.response.seatMap.sectors;
+            arrayConsultaOrdenada = organizarConsultas(sectores)
+            setArrayArreglado(arrayConsultaOrdenada);
 
             for (let i in ty) {
                 let obj = {
@@ -121,9 +96,7 @@ const SeatMap = () => {
                 map={TodoNuevo}
                 onChange={(e) => handleOnChange(e)}
             />
-            {
-                renderModal()
-            }
+            <FullScreenDialog opcion={modalIsOpen} setOp={setModalIsOpen} />
         </div>
 
 

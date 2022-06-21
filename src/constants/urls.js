@@ -18,6 +18,7 @@ const urls = {
     getEvent: `${base}/event`,
     getSeatMap: `${base}/event/seat-map/`,
     addSeatMapToEvent: `${base}/event/seat-map`,
+    eventGetSeatMap: `${base}/event/seat-map`,
     //plans
     addPlans: `${base}/plans`,
     addpPlanGroup: `${base}/plans/group`,
