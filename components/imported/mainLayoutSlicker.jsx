@@ -75,13 +75,19 @@ const LayoutBanner = () => {
         <Slider arrows={false} ref={slider} {...settings}>
           <div>
             <img
+              src="../assets/BannerGladiadores.jpg"
+              style={{ height: "40vh", width: "100%", objectFit: "cover" }}
+            />
+          </div>
+          <div>
+            <img
               src="../assets/mainimage.png"
               style={{ height: "40vh", width: "100%", objectFit: "cover" }}
             />
           </div>
           <div>
             <img
-              src="../assets/mainLayoutImage.png"
+              src="../assets/WorkGladiadores.jpg"
               style={{ height: "40vh", width: "100%", objectFit: "cover" }}
             />
           </div>

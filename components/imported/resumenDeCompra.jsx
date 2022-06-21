@@ -41,6 +41,7 @@ const ResumenDeCompra = ({ matchid }) => {
                   backgroundColor: "#FECC1D",
                   fontSize: "1.125rem",
                   marginTop: "50px",
+                  marginBottom:'20px'
                 }}
               >
                 Comprar

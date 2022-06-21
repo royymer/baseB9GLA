@@ -92,7 +92,8 @@ const RegisterForm = (props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    watch,
+    formState: { errors, isValid },
     reset,
   } = useForm();
 
@@ -105,24 +106,27 @@ const RegisterForm = (props) => {
   const [phone, setPhone] = useState("");
   const [document, setDocument] = useState("");
   const [email, setEmail] = useState("");
-  const [pin, setPin] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [password, setPassword] = useState("");
 
-  const registrar = async () =>{
-    let data = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phone: phone,
-      password: password,
-      document: document,
-      pin: pin
-    }
-    let {status, response} = await userService.addUser(data);
-    if(status === 200){
-      alert("El usuario ha sido registrado");
-    }else{
-      console.log(response)
+  const registrar = async () => {
+    console.log(isValid)
+    if (isValid) {
+      let data = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        password: password,
+        document: document,
+        
+      }
+      let { status, response } = await userService.addUser(data);
+      if (status === 200) {
+        alert("El usuario ha sido registrado");
+      } else {
+        console.log(response)
+      }
     }
   }
 
@@ -141,7 +145,7 @@ const RegisterForm = (props) => {
       <Dialog open={isOpen} onClose={onClose}>
         <Grid container>
           <Grid item xs={12} sx={{ textAlign: "end", marginRight: "10px" }}>
-            <CloseIcon onClick={() => setIsDialogRegistroOpen(false)} />
+            {/* <CloseIcon onClick={() => setIsDialogRegistroOpen(false)} /> */}
           </Grid>
           <Grid item xs={12}>
             <DialogTitle sx={{ textAlign: "center" }}>Registro</DialogTitle>
@@ -239,6 +243,33 @@ const RegisterForm = (props) => {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                   />
+
+                  <Typography sx={{ marginBottom: "10px" }}>
+                    Documento
+                  </Typography>
+                  <TextField
+                    sx={{ marginBottom: "20px" }}
+                    name="document"
+                    variant="outlined"
+                    label="Ingrese su cedula"
+                    {...register("document", {
+                      required: {
+                        value: true,
+                        message: "Campo requerido",
+                      },
+                      // pattern: {
+                      //   value: /[^a-zA-Z0-9]/g,
+                      //   message: "No introducir simbolos",
+                      // },
+                    })}
+                    error={errors.document}
+                    helperText={
+                      errors.document && <p>{errors.document.message}</p>
+                    }
+                    value={document}
+                    onChange={(e) => setDocument(e.target.value)}
+                  />
+
                   {/* ///CONTRA LARGA */}
 
                   <Typography sx={{ marginBottom: "10px" }}>
@@ -258,7 +289,7 @@ const RegisterForm = (props) => {
                           message: "Campo requerido",
                         },
                         minLength: {
-                          value: 8,
+                          value: 6,
                           message: "Contrasena muy corta",
                         },
                       })}
@@ -266,7 +297,7 @@ const RegisterForm = (props) => {
                       id="outlined-adornment-password"
                       type={values.showPassword ? "text" : "password"}
                       value={password}
-                      onChange={(e)=>setPassword(e.target.value)}
+                      onChange={(e) => setPassword(e.target.value)}
                       endAdornment={
                         <InputAdornment position="end">
                           <IconButton
@@ -351,47 +382,58 @@ const RegisterForm = (props) => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   /> */}
+
                   <Typography sx={{ marginBottom: "10px" }}>
-                    Documento
+                    Confirme su contraseña
                   </Typography>
-                  <TextField
-                    sx={{ marginBottom: "20px" }}
-                    name="document"
-                    variant="outlined"
-                    label="Ingrese su cedula"
-                    {...register("document", {
-                      required: {
-                        value: true,
-                        message: "Campo requerido",
-                      },
-                      // pattern: {
-                      //   value: /[^a-zA-Z0-9]/g,
-                      //   message: "No introducir simbolos",
-                      // },
-                    })}
-                    error={errors.document}
-                    helperText={
-                      errors.document && <p>{errors.document.message}</p>
-                    }
-                    value={document}
-                    onChange={(e) => setDocument(e.target.value)}
-                  />
-                  <Typography sx={{ marginBottom: "10px" }}>Pin</Typography>
-                  <TextField
-                    sx={{ marginBottom: "20px" }}
-                    name="pin"
-                    label="Ingrese pin"
-                    variant="outlined"
-                    inputProps={{
-                      ...register("pin", { required: true }),
-                    }}
-                    error={errors.firstName}
-                    helperText={
-                      errors.firstName && <p>El campo pin es requerido</p>
-                    }
-                    value={pin}
-                    onChange={(e) => setPin(e.target.value)}
-                  />
+                  <FormControl sx={{ marginBottom: "20px" }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-password">
+                      Confirme su contraseña
+                    </InputLabel>
+                    <OutlinedInput
+                      name="confirmPassword"
+                      label="Confirme su contrasena"
+                      variant="outlined"
+                      
+                      {...register("confirmPassword", {
+                        required: {
+                          value: true,
+                          message: "Campo requerido",
+                        },
+                        validate: (value) => watch("password") === value || "Las contraseñas no coinciden.",
+                        
+                      })}
+                      error={errors.confirmPassword}
+                      id="outlined-adornment-password"
+                      type={values.showPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            sx={{ color: " #22BDFF" }}
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {values.showPassword ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                    <FormHelperText>
+                      {errors.confirmPassword && (
+                        <p style={{ color: "red" }}>
+                          {errors.confirmPassword.message}
+                        </p>
+                      )}
+                    </FormHelperText>
+                  </FormControl>
                   {/* <TextField
                     sx={{ marginBottom: "50px" }}
                     name="Contrasena"
