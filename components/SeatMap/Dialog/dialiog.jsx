@@ -17,15 +17,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function FullScreenDialog({opcion, setOp}) {
+export default function FullScreenDialog(opcion, setMiOP) {
     const [open, setOpen] = React.useState(opcion);
 
+
+    React.useEffect(()=>{
+        handleClickOpen()
+    },[])
+
     const handleClickOpen = () => {
-        setOp(true)
+        setMiOP(true)
     };
 
     const handleClose = () => {
-        setOp(false)
+        setOpen(false)
     };
 
     return (
