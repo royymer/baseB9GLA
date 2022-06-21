@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 const locale = require("date-fns/locale");
 
 const MatchSelected = (props) => {
-  console.log(props.event.start.date);
+   console.log(props.event.start.date); 
   const router = useRouter();
 
   const Day = format(new Date(props.event.start.date), "EEEE", {

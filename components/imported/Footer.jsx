@@ -30,7 +30,7 @@ export default function Footer() {
   const matches = useMediaQuery(theme.breakpoints.up("md"));
 
   return (
-    <Grid container style={{ backgroundColor: "#0D1626", padding: "50px" }}>
+    <Grid container style={{ backgroundColor: "#0D1626", padding: "50px", justifyContent:'space-between' }}>
       <Grid item xs={12} md={3}>
         <img
           src="/assets/logo1.png"
@@ -39,17 +39,20 @@ export default function Footer() {
         />
         {matches ? (
           <Typography sx={{ ...textstyles1 }}>
-            © 2021 back9ticket. Todos los derechos reservados.
+            © 2022 back9ticket. Todos los derechos reservados.
           </Typography>
         ) : null}
       </Grid>
 
-      <Grid item xs={12} md={3}>
-        <Typography sx={{ ...textstyles2 }}>Back9 Ticket</Typography>
+      <div style={{display:'flex', flexDirection:'column-reverse'}}>
 
+      <Grid item xs={12} md={3} sx={{display:'flex', }}>
+        
+      
         <Box
           sx={{
             display: "flex",
+            
           }}
         >
           <ArrowForwardIosIcon
@@ -59,54 +62,7 @@ export default function Footer() {
               margin: "8px 10px 10px 0",
             }}
           />
-          <Typography sx={{ ...textstyles1 }}> Sobre nosotros</Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-          }}
-        >
-          <ArrowForwardIosIcon
-            sx={{
-              color: "#FECC1D",
-              fontSize: "12px",
-              margin: "8px 10px 10px 0",
-            }}
-          />
-          <Typography sx={{ ...textstyles1 }}> Boletos</Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-          }}
-        >
-          <ArrowForwardIosIcon
-            sx={{
-              color: "#FECC1D",
-              fontSize: "12px",
-              margin: "8px 10px 10px 0",
-            }}
-          />
-          <Typography sx={{ ...textstyles1 }}> Tiendas</Typography>
-        </Box>
-      </Grid>
-
-      <Grid item xs={12} md={3}>
-        <Typography sx={{ ...textstyles2 }}> Términos y políticas</Typography>
-
-        <Box
-          sx={{
-            display: "flex",
-          }}
-        >
-          <ArrowForwardIosIcon
-            sx={{
-              color: "#FECC1D",
-              fontSize: "12px",
-              margin: "8px 10px 10px 0",
-            }}
-          />
-          <Typography sx={{ ...textstyles1 }}>
+          <Typography sx={{ width:'200px', ...textstyles1 }}>
             {" "}
             Términos y condiciones
           </Typography>
@@ -124,18 +80,20 @@ export default function Footer() {
               margin: "8px 10px 10px 0",
             }}
           />
-          <Typography sx={{ ...textstyles1 }}>
+          <Typography sx={{ width:'200px', ...textstyles1 }}>
             {" "}
             Políticas de privacidad
           </Typography>
         </Box>
       </Grid>
+          
 
-      <Grid item xs={12} md={3}>
-        <Typography sx={{ ...textstyles2 }}> Únete a nosotros</Typography>
+      <Grid item xs={12} md={3}  >
+        
         <Box
           sx={{
             display: "flex",
+            marginTop: '31px', marginLeft: '141px',
 
             ...textstyles1,
           }}
@@ -146,6 +104,9 @@ export default function Footer() {
           <LinkedInIcon sx={{ marginRight: "22px" }} />
         </Box>
       </Grid>
+
+      </div>
+
       <Grid item xs={12}>
         {matches ? null : (
           <Typography sx={{ ...textstyles1 }}>
