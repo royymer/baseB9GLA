@@ -93,7 +93,7 @@ const InicioForm = (props) => {
       <Dialog open={isOpen} onClose={onClose}>
         <Grid container>
           <Grid item xs={12} sx={{ textAlign: "end", marginRight: "10px" }}>
-            <CloseIcon onClick={() => setIsDialogInicioOpen(false)} />
+            {/* <CloseIcon onClick={() => setIsDialogInicioOpen(false)} /> */}
           </Grid>
           <Grid item xs={12}>
             <DialogTitle sx={{ textAlign: "center" }}>

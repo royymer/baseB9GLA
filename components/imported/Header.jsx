@@ -73,7 +73,7 @@ export default function Header() {
       />
       <InicioForm
         isOpen={isDialogInicioOpen}
-        onClose={() => setIsDialogRegistroOpen(false)}
+        onClose={() => setIsDialogInicioOpen(false)}
       />
 
       <AppBar
