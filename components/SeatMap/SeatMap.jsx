@@ -53,6 +53,7 @@ const SeatMap = () => {
 
     const handleOnChange = (e) => {
         if (e[0] !== undefined) {
+            console.log("32323", e[0])
             setQueZ(e[0].id)
         }
         setModalIsOpen(!modalIsOpen)
@@ -64,6 +65,7 @@ const SeatMap = () => {
 
             let sectores = request0.response.seatMap.sectors;
             arrayConsultaOrdenada = organizarConsultas(sectores)
+            console.log("secciones", arrayConsultaOrdenada);
             setArrayArreglado(arrayConsultaOrdenada);
 
             for (let i in ty) {
