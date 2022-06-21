@@ -57,7 +57,7 @@ const DataDisplay = (props) => {
         {" "}
         Todos los eventos
       </Typography>
-        
+
       <Box
         sx={{
           margin: "20px 0",
@@ -70,7 +70,7 @@ const DataDisplay = (props) => {
       >
 
 
-        
+
       </Box>
       <Divider
         sx={{
@@ -111,7 +111,7 @@ const DataDisplay = (props) => {
           return (
             <Grid item xs={matchesmd ? (datadisplaySize ? 6 : 12) : 12}>
               <Paper elevation={1}>
-                <Grid container sx={{ marginBottom: "75px", padding: "20px" }}>
+                <Grid container sx={{ marginBottom: "75px", padding: "20px", justifyContent:'space-around' }}>
                   <Grid
                     item
                     xs={matchesmd ? (datadisplaySize ? 12 : 3) : 12}
@@ -132,7 +132,7 @@ const DataDisplay = (props) => {
                       {DayMayus}, {horaNumero}:{minutes}
                       {horaAMPM}
                     </Typography>
-                    
+
                   </Grid>
                   <Grid
                     item
@@ -144,6 +144,7 @@ const DataDisplay = (props) => {
                           ? "center"
                           : "start"
                         : "center",
+                      justifyContent: 'space-around'
                     }}
                   >
                     <Typography>Jornada 1</Typography>
@@ -155,60 +156,81 @@ const DataDisplay = (props) => {
                     <Typography>{juego.address.name}</Typography>
                     <Typography>quedan pocas entradas</Typography>
                   </Grid>
-                  <Grid
-                    item
-                    xs={matchesmd ? (datadisplaySize ? 12 : 3) : 12}
-                    sx={{
-                      marginBottom: "30px",
-                      textAlign: matchesmd
-                        ? datadisplaySize
-                          ? "center"
-                          : "end"
-                        : "center",
-                    }}
-                  >
-                    <img src={juego.banner} style={{ maxWidth: "250px", marginTop:'24px' }} />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={matchesmd ? (datadisplaySize ? 12 : 3) : 12}
-                    sx={{ marginBottom: "30px" }}
-                  >
-                    <Link href={`/boletos/${juego._id}`}>
-                      <Box
+                  <div className='div-contenedor' style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexWrap: 'wrap',
+                    flexDirection: 'row',
+                    marginLeft:'-42px',
+                    marginTop:'-25px'
+                  }} >
+                    <div className="div-de-imagen" style={{marginLeft:'25px'}} >
+                      {/* <Grid
+                        item
+                        xs={matchesmd ? (datadisplaySize ? 12 : 3) : 12}
                         sx={{
+                          marginBottom: "30px",
                           textAlign: matchesmd
                             ? datadisplaySize
                               ? "center"
                               : "end"
                             : "center",
                         }}
-                      >
-                        <a>
-                          <Button
-                            variant="contained"
-                            disableRipple
-                            size="small"
-                            sx={{marginTop:'46px',
-                              backgroundColor: "#FECC1D",
-                              "&& .hover": {
-                                backgroundColor: "none",
-                              },
-                            }}
-                          >
-                            {" "}
-                            Comprar boletos{" "}
-                          </Button>
-                        </a>
-                      </Box>
-                    </Link>
-                  </Grid>
+                      > */}
+                      <img src={juego.banner} style={{ maxWidth: "250px", marginTop: '24px' }} />
+                      {/* </Grid> */}
+                    </div>
+                    <div className="div-button" style={{
+                      marginLeft: '42px',
+                      marginBottom: '20px',
+                    }} >
+                      {/* <Grid
+                      item
+                      xs={matchesmd ? (datadisplaySize ? 12 : 3) : 12}
+                      sx={{ marginBottom: "30px" }}
+                    > */}
+                      <Link href={`/boletos/${juego._id}`}>
+                        {/* <Box
+                          sx={{
+                            textAlign: matchesmd
+                              ? datadisplaySize
+                                ? "center"
+                                : "end"
+                              : "center",
+                            height: '30px',
+                            width: '163px',
+                          }}
+                        > */}
+
+                        <Button
+                          variant="contained"
+                          disableRipple
+                          size="small"
+                          sx={{
+                            marginTop: '46px',
+                            backgroundColor: "#FECC1D",
+                            height: '30px',
+                            width: '163px',
+                            "&& .hover": {
+                              backgroundColor: "none",
+                            },
+                          }}
+                        >
+                          {" "}
+                          Comprar boletos{" "}
+                        </Button>
+
+                        {/* </Box> */}
+                      </Link>
+                      {/*  </Grid> */}
+                    </div>
+                  </div>
                 </Grid>
               </Paper>
             </Grid>
           );
         })}
-      </Grid>
+      </Grid >
 
       <div
         style={{ display: "flex", justifyContent: "center", margin: "20px 0" }}
@@ -230,7 +252,7 @@ const DataDisplay = (props) => {
           Cargar mas
         </Button>
       </div>
-    </Container>
+    </Container >
   );
 };
 
