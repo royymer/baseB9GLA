@@ -4,6 +4,7 @@ import ty1 from "./svgs/ty1";
 import { CheckboxSVGMap } from "react-svg-map";
 import Modal from "react-modal";
 
+
 //test de svg preprocesado
 import TodoNuevo from "../SeatMap/svgs/TodoNuevo";
 //import unoAh from "../SeatMap/svgs/unoAh";
@@ -12,6 +13,8 @@ import TodoNuevo from "../SeatMap/svgs/TodoNuevo";
 //service
 import { eventService } from "../../src/services";
 //import generateSVGmap from "./functions/generateSVGmap";
+
+import foto from "./zonas/medioa1.png"
 
 const customStyles = {
     content: {
@@ -84,7 +87,7 @@ const SeatMap = () => {
     useEffect(() => {
         async function init() {
             let request0 = await eventService.getSeatMap({ id: "629a66712383372c770c64a8", ticket: "1" });
-            console.log("Disponibilidad",request0);
+            console.log("Disponibilidad", request0);
 
             //let aTransformar = generateSVGmap(ty1, "ty1", "ty1_");
 
@@ -108,7 +111,12 @@ const SeatMap = () => {
     }, []);
 
     return (
-        <>
+        <div
+            style={{
+                height: "400px",
+                width: "400px"
+            }}
+        >
             <CheckboxSVGMap
                 map={TodoNuevo}
                 onChange={(e) => handleOnChange(e)}
@@ -116,7 +124,7 @@ const SeatMap = () => {
             {
                 renderModal()
             }
-        </>
+        </div>
 
 
     )
