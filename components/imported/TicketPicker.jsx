@@ -6,7 +6,7 @@ import BoletosForm from '../imported/misc/forms/boletosForm';
 
 
 
-function TicketPicker() {
+function TicketPicker({onclickT}) {
 
   const [boletos, setBoletos] = useState(1);
 
@@ -20,6 +20,7 @@ function TicketPicker() {
 
   const handleChanges = (event) => {
     setBoletos(event.target.value);
+    onclickT(event.target.value);
   };
 
   return (

@@ -5,7 +5,7 @@ import { Container, Typography, Box, TextField, MenuItem } from "@mui/material";
 import { useState } from "react";
 import SeatMap  from "../SeatMap/SeatMap";
 
-const SeatMapMain = () => {
+const SeatMapMain = ({hashEvent, numberTicket}) => {
   const [leyenda, setLeyenda] = useState("true");
   const handleChangeLeyenda = (event) => {
     setLeyenda(event.target.value);
@@ -37,7 +37,7 @@ const SeatMapMain = () => {
               alignItems: "center",
             }}
           >
-            <SeatMap />
+            <SeatMap hashEvent={hashEvent} numberTicket={numberTicket} />
           </Container>
           <Box>
             <Box
