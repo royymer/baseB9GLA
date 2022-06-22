@@ -1,10 +1,12 @@
 const organizarConsultas = (arr) => {
     let arrayConsultaOrdenada = [];
     let sectores = arr;
+    let _secciones = [];
     for (let i in sectores) {
         let zonas = sectores[i].zones;
         for (let j in zonas) {
             let secciones = zonas[j].sections
+            _secciones.push(zonas[j].sections)
             for (let k in secciones) {
                 let filas = secciones[k].rows;
                 for (let l in filas) {
@@ -24,11 +26,8 @@ const organizarConsultas = (arr) => {
             }
         }
     }
-    // for(let i in arrayConsultaOrdenada){
-    //     console.log(arrayConsultaOrdenada[i]);
-    // }
 
-    return arrayConsultaOrdenada;
+    return _secciones;
 }
 
 export default organizarConsultas

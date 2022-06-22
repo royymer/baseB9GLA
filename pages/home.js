@@ -17,46 +17,63 @@ import { eventService } from '../src/services'
 import { Grid } from "@mui/material";
 import { set } from 'date-fns'
 
+//para la dimensión
+//import useWindowDimensions from '../hooks/useWindowDimensions';
+
+import {
+  useWindowSize,
+  useWindowWidth,
+  useWindowHeight,
+} from '@react-hook/window-size'
+
 
 export default function Home() {
 
-    const [matches, setMatches] = useState([])
-    const [loading, setLoading] = useState(false)
-    
-    useEffect(() => {
-     
-      async function init(){  
-        setLoading(true)
-        const { response, status } = await eventService.getEvents({page: 1, limit: 10})
-        setLoading(false)
-        console.log(response)
-        setMatches(response.docs)
-      }
-      init()
-    }, [])
+  const [matches, setMatches] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-    console.log(matches)
-    
-    
+  const [width, height] = useWindowSize()
+  const onlyWidth = useWindowWidth()
+  const onlyHeight = useWindowHeight()
 
-    console.log(matches)
+  useEffect(() => {
+    async function init() {
+      setLoading(true);
+      const { response, status } = await eventService.getEvents({ page: 1, limit: 10 });
+      setLoading(false);
+      console.log(response);
+      setMatches(response.docs);
+      console.log(width, height)
+    }
+    init()
+  }, [])
+
+  console.log(matches)
+
+
+
+  console.log(matches)
 
   return (
-    
-    <div style={{}}> 
-      <Header/>
-          <Grid container xs={9} style={{marginLeft:'auto', marginRight:'auto'}}>
-              
-              <LayoutBanner/>
-              
-              <CardSlider data={matches} />
-              <Spinner loading={loading}/>
-              <DataDisplay data = {matches} />
-              
-          </Grid>
-      <Footer/>
+
+    <div style={{}}>
+      <Header />
+      <Grid container xs={9} style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+
+        {
+          width > 500 ?
+            <LayoutBanner />
+            :
+            null
+        }
+
+        <CardSlider data={matches} />
+        <Spinner loading={loading} />
+        <DataDisplay data={matches} />
+
+      </Grid>
+      <Footer />
     </div>
-    
+
   )
 }
-    
