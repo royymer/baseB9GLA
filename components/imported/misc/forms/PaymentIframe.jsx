@@ -44,12 +44,13 @@ export default function PaymentIframe({ currency }) {
     }
 
     let iframestyle = {
-        minWidth: '986px',
-        height: '800px',
+        width: '100%',
+        minHeight:'786px',
+        height: 'auto',
 
         marginTop: '0px',
         border: 'none',
-        backgroundColor: 'white',
+        /* backgroundColor: 'white', */
         
 
 
@@ -66,11 +67,11 @@ export default function PaymentIframe({ currency }) {
     return (
 
 
-        <>
+        <div style={{  width:'100%' }} >
             <Spinner loading={loading} />
 
             <iframe src={`https://b9-ticketing-api.herokuapp.com/api/v1/view/lukapay?r=VG0AOX09IT8&currency=${currency}`} style={renderIframe}></iframe>
-        </>
+        </div>
     )
 
 }

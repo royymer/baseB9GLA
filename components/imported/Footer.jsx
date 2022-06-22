@@ -46,7 +46,7 @@ export default function Footer() {
 
       <div style={{display:'flex', flexDirection:'column-reverse'}}>
 
-      <Grid item xs={12} md={3} sx={{display:'flex', }}>
+      <Grid item xs={12} md={3} sx={{display:'flex', flexWrap:'wrap' }}>
         
       
         <Box
