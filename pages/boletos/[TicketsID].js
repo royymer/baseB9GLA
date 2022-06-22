@@ -26,16 +26,16 @@ const Details = ({ juegos }) => {
   
   const [matchinfo, setMatchinfo] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [userSession, setUserSession] = useState({})
 
 
   const router = useRouter();
   const boletosID = router.query.TicketsID;
-  console.log(boletosID)
+  //console.log("estas es la url",boletosID)
   const itemFiltrado = []
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("lg"));
   const matchesmd = useMediaQuery(theme.breakpoints.up("md"));
+  const [numberT, setNumberT] = useState()
 
    useEffect(() => {
      
@@ -52,13 +52,10 @@ const Details = ({ juegos }) => {
     init()
   }, []) 
 
-  useEffect(() => {
-    // Perform localStorage action
-     let user = localStorage.getItem('user')
-    setUserSession(user)
-    
-  }, []) 
-
+  const numberTicket = (numberT) => {
+    console.log("numero de Ticket", numberT)
+    setNumberT(numberT);
+  }
 
   return (
     <>
@@ -68,7 +65,7 @@ const Details = ({ juegos }) => {
           <Grid item xs={3} sx={{ borderRightColor: "black" }}>
             
               <div style={{marginLeft: '50px', marginTop: '50px'}} >
-                <TicketPicker userSession={userSession} />
+                <TicketPicker onclickT={(e)=>numberTicket(e)} />
               </div>
             
           </Grid>
@@ -78,7 +75,7 @@ const Details = ({ juegos }) => {
           <Grid item xs={matches ? 9 : 12}>
             <MatchSelected event={matchinfo} />
             
-            <SeatMapMain />
+            <SeatMapMain  hashEvent={boletosID} numberTicket={numberT} />
             <ResumenDeCompra matchid={boletosID} />
           </Grid>}
         </Grid>

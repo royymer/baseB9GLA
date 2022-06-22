@@ -1,103 +1,123 @@
-import React, { useEffect, useState } from "react";
-import ty from "./svgs/ty";
-import ty1 from "./svgs/ty1";
+import React, { useEffect, useMemo, useState } from "react";
 import { CheckboxSVGMap, SVGMap, RadioSVGMap } from "react-svg-map";
-//test de svg preprocesado
-import TodoNuevo from "../SeatMap/svgs/TodoNuevo";
+
 //service
 import { eventService } from "../../src/services";
-//import generateSVGmap from "./functions/generateSVGmap";
 import organizarConsultas from "./functions/organizarConsulta";
-
-//imagenes de las secciones
-import Zona1 from "./zonas/zona1";
-import Zona2 from "./zonas/zona2";
-import Zona3 from "./zonas/zona3";
 
 //para modal
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
+import Grid from '@material-ui/core/Grid';
+
+//elementos del select
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { set } from "date-fns";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-var zonaSeleccionada;
-
-const SeatMap = () => {
-    const [seleccion, setSeleccion] = useState(false);
-    const [loc, setLoc] = useState();
-    const [xr, setXr] = useState()
-    const locations = [];
-
+const SeatMap = ({ hashEvent, numberTicket }) => {
     //zona seleccionada que zona es
-    const [queZ, setQueZ] = useState();
+    //const [queZ, setQueZ] = useState();
 
-    //para consulta de la disponibilidad
-    var arrayConsultaOrdenada = [];
     const [arrayAreglado, setArrayArreglado] = useState();
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [arrayConsultaOrdenada, setArrayConsultaOrdenada] = useState({
+        label: "",
+        viewBox: "",
+        locations: []
+    });
 
-    //emigrado
-    const [open, setOpen] = React.useState(true);
+    const [sectoresX, setSectoresX] = useState([]);
+    const [selectSection, setSelectSection] = useState({ rows: [] });
 
+    //estados del select
+    const [filaElegida, setFilaElegida] = useState("");
+    const [row, setRow] = useState({
+        seats: []
+    });
+    const [selectedSeat, setSelectedSeat] = useState("")
+    const [selectedSeats, setSelectedSeats] = useState([])
+    const [sector, setSector] = useState({})
+    const [zone, setZone] = useState({});
+
+    const [seatLimit, seatLimitSeat] = useState(numberTicket)
+
+    const [onZone, setOnZone] = useState()
+
+    const elegirFila = (event) => {
+        setRow(selectSection.rows.find(row => row._id === event.target.value))
+        setFilaElegida(event.target.value)
+    }
+    const selectSeat = (e) => {
+        setSelectedSeat(e.target.value)
+        const oldSeats = [...selectedSeats]
+        oldSeats.push({
+            sector: sector._id,
+            zone: zone._id,
+            section: selectSection._id,
+            row: filaElegida,
+            seat: e.target.value
+        })
+
+        setSelectedSeats([...oldSeats])
+    }
     const handleOnChange = (e) => {
+        console.log("valores", e)
         if (e[0] !== undefined) {
-            console.log("32323", e[0])
-            setQueZ(e[0].id)
+            setModalIsOpen(true)
+            let splitVal = e[0].id.split(" ");
+            const sector = sectoresX.find(elem => elem._id === splitVal[0])
+            const zone = sector.zones.find(elem => elem._id === splitVal[1]);
+            const section = zone.sections.find(elem => elem._id === splitVal[2]);
+            setSector(sector)
+            setZone(zone)
+            setSelectSection(section);
+            //vaciar vector
+
         }
-        setModalIsOpen(!modalIsOpen)
     }
 
     useEffect(() => {
         async function init() {
-            let request0 = await eventService.eventGetSeatMap({ id: "629a66712383372c770c64a8", ticket: "1" });
+            let request0 = await eventService.eventGetSeatMap({ id: hashEvent, ticket: numberTicket });
 
-            let sectores = request0.response.seatMap.sectors;
-            arrayConsultaOrdenada = organizarConsultas(sectores)
-            console.log("secciones", arrayConsultaOrdenada);
-            setArrayArreglado(arrayConsultaOrdenada);
-
-            for (let i in ty) {
-                let obj = {
-                    path: ty[i],
-                    name: `seccion_${i}`,
-                    id: `seccion_${i}`
-                }
-                locations.push(obj);
-            }
-
-            let obj1 = {
-                "label": "Parco",
-                "viewBox": "0 0 261 171",
-                "locations": locations
-            }
-            setLoc(obj1);
+            let sectores = await request0.response.seatMap.sectors;
+            setSectoresX(sectores);
+            let tr = organizarConsultas(sectores)
+            setArrayConsultaOrdenada({
+                label: "test",
+                viewBox: "0 0 958 989",
+                locations: [
+                    ...tr
+                ]
+            });
         }
         init();
     }, []);
 
     function FullScreenDialog(opcion, queZ) {
         const handleClose = () => {
-            setOpen(false)
             setModalIsOpen(false)
-        };
+        }
 
         return (
             <div>
                 <Dialog
                     fullScreen
-                    open={open}
+                    open={modalIsOpen}
                     onClose={handleClose}
                     TransitionComponent={Transition}
                 >
@@ -119,37 +139,73 @@ const SeatMap = () => {
                             </Button>
                         </Toolbar>
                     </AppBar>
-                    <List>
-                        <ListItem>
-                            <ListItemText primary="Aquí va la imagen" />
-                            <div
-                                style={{
-                                    aligItem: "center"
-                                }}
-                            >
-                                {
-                                    queZ === "test_21" ?
-                                        <Zona1 />
-                                        : queZ === "test_22" ?
-                                            <Zona2 />
-                                            :
-                                            queZ === "test_23" ?
-                                            <Zona3 />
-                                            :
-                                            null
-                                }
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <Grid container justifyContent="center" spacing={2}>
+                                <Grid key={`r07`} item>
+                                    <h1>ki</h1>
+                                </Grid>
+                            </Grid>
+                            <Grid container justifyContent="center" spacing={2}>
+                                <Grid item md={6}>
+                                    <Grid container justifyContent="center" spacing={2}>
+                                        <Grid item xs={8}>
+                                            <Select
+                                                value={filaElegida}
+                                                label="Elija su Fila"
+                                                onChange={elegirFila}
+                                                fullWidth
+                                            >
+                                                <MenuItem selected value="" >Ninguno seleccionado</MenuItem>
+                                                {
+                                                    selectSection.rows.map((row, index) => (
+                                                        <MenuItem value={row._id} key={index} >{row.rowNumber}</MenuItem>
+                                                    ))
+                                                }
+                                            </Select>
+                                        </Grid>
+                                        {row.seats.length &&
+                                            <Grid item xs={8}>
+                                                <Select
+                                                    value={selectedSeat}
+                                                    label="Elija su asiento"
+                                                    onChange={selectSeat}
+                                                    fullWidth
+                                                >
+                                                    <MenuItem selected value="" >Ninguno seleccionado</MenuItem>
+                                                    {
+                                                        row.seats.map((seat, index) => (
+                                                            <MenuItem
+                                                                onClick={() => console.log(seat.isAvailableSeat)}
+                                                                value={seat._id} key={index}
+                                                                style={{
+                                                                    backgroundColor: seat.isAvailableSeat === false ? "red" : "white"
+                                                                }}
+                                                            >
+                                                                {seat.seatNumber}
+                                                            </MenuItem>
+                                                        ))
+                                                    }
+                                                </Select>
+                                            </Grid>}
 
-                            </div>
+                                    </Grid>
 
-                        </ListItem>
-                        <Divider />
-                        <ListItem button>
-                            <ListItemText
-                                primary="Aquí va la disponibilidad"
-                                secondary="Tethys"
-                            />
-                        </ListItem>
-                    </List>
+                                </Grid>
+                                <Grid item md={6}>
+                                    {selectedSeats.map((seat, index) => (
+                                        <Grid>
+                                            <p>Sector: {seat.sector}</p>
+                                            <p>Zone: {seat.zone}</p>
+                                            <p>Section: {seat.section}</p>
+                                            <p>Row: {seat.row}</p>
+                                            <p>Seat {seat.seat}</p>
+                                        </Grid>
+                                    ))}
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </Dialog>
             </div>
         )
@@ -162,11 +218,19 @@ const SeatMap = () => {
                 width: "400px"
             }}
         >
+
             <CheckboxSVGMap
-                map={TodoNuevo}
+                map={arrayConsultaOrdenada}
                 onChange={(e) => handleOnChange(e)}
+                onLocationMouseMove={(e)=>console.log(e.target)}
+
             />
-            {modalIsOpen && FullScreenDialog(open, queZ)}
+
+            {
+                FullScreenDialog()
+            }
+
+
         </div>
 
 
