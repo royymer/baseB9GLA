@@ -6,11 +6,8 @@ import BoletosForm from '../imported/misc/forms/boletosForm';
 
 
 
-<<<<<<< HEAD
+
 function TicketPicker({onclickT}) {
-=======
-function TicketPicker({ user }) {
->>>>>>> 8957b333eba48cf1a180c680533d59701f579771
 
   const [boletos, setBoletos] = useState(1);
 
