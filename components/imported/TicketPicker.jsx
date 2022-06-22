@@ -7,20 +7,33 @@ import BoletosForm from '../imported/misc/forms/boletosForm';
 
 
 
-function TicketPicker({onclickT}) {
+function TicketPicker({onclickT , setAditionalsUsers}) {
 
   const [boletos, setBoletos] = useState(1);
-
-  let ticketforms = []
+  const [validUsers, setValidUser] = useState([])
+  const [ticketforms, setTicketforms] = useState([])
   let numeroDePersonas = 0;
+  const [aditionalsUser, setAditionalsUser] = useState([])
 
-  for (let i = 0; i < boletos; i++) {
-    console.log(i);
-    ticketforms.push(BoletosForm);
-  }
-
+  
+  useEffect(()=>{
+    for (let i = 0; i < boletos; i++) {
+      ticketforms.push({
+        id: i
+      });
+    }
+  },[])
   const handleChanges = (event) => {
+    
+    setTicketforms([])
     setBoletos(event.target.value);
+    const ticketformsAux = []
+    for (let i = 0; i < event.target.value; i++) {
+      ticketformsAux.push({
+        id: i
+      });
+    }
+    setTicketforms(ticketformsAux)
     onclickT(event.target.value);
   };
 
@@ -29,10 +42,21 @@ function TicketPicker({onclickT}) {
    useEffect(() => {
     // Perform localStorage action
      let item = JSON.parse(localStorage.getItem('user'))
-    console.log(item)
 
   }, []) 
-
+  const addUser=(data)=>{
+    const auxUsers = [...aditionalsUser];
+    auxUsers.push(data)
+    setAditionalsUser([...auxUsers])
+    if(auxUsers.length===ticketforms.length){
+      setAditionalsUsers(auxUsers)
+    }
+  }
+  const deleteUser=(id)=>{
+    let auxArra =  aditionalsUser.filter(user=>user.id!==id)
+    setAditionalsUser(auxArra)
+    console.log(auxArra)
+  }
   return (
     <>
     
@@ -61,12 +85,9 @@ function TicketPicker({onclickT}) {
             </TextField>
             </Box>
 
-            {ticketforms.map(() => {
-            numeroDePersonas += 1;
+            {ticketforms.length&&ticketforms.map((ticket, index) => {
             return (
-              <>
-                <BoletosForm persona={numeroDePersonas} arr={ticketforms}  />
-              </>
+                <BoletosForm key={index} id={ticket.id} deleteUser={deleteUser} addUser={(data)=>addUser(data)} persona={numeroDePersonas} arr={ticketforms}  />
             );
           })}
     

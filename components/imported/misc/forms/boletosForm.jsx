@@ -26,20 +26,14 @@ import {
   const [open, setOpen] = useState(false);
   const [userTicket, setUserTicket] = useState(true)
   const [userSession, setUserSession] = useState({})
-  /*   const [ticketType, setTicketType] = useState(4)
-   */
 
-  const [multipleForm, setMultipleForm] = useState([])
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [document, setDocument] = useState("");
+  const [email, setEmail] = useState("");
+  const [isEdit, setIsEdit] = useState(true)
 
-  /* const handleChanges = (event) => {
-    setBoletos(event.target.value);
-  }; */
-
-  React.useEffect(() => {
-    console.log(multipleForm);
-
-    console.log(multipleForm.length);
-  }, [multipleForm]);
 
 
 
@@ -47,53 +41,21 @@ import {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm();
 
   const onSubmit = (data) => {
-    const r = data;
-    setMostrar(false);
-
-    setMultipleForm([...multipleForm, r]);
-
-    reset();
+      if(data.firstName!==""&&data.lastName!==""&&data.document!==""&&data.email!==""&&data.phone!==""){
+        setIsEdit(false)
+        props.addUser({
+          id:props.id,
+          ...data
+        })
+        setOpen(false)
+      }
+        
   };
 
-  /*  useEffect(() => {
-     // Perform localStorage action
-      let user = localStorage.getItem('user')
-     console.log(item)
-     setUserSession(user)
-     
-   }, [])  */
-
-  useEffect(() => {
-    if (localStorage.getItem('user')) {
-      
-      const userData = JSON.parse(localStorage.getItem('user'))
-      console.log(userData)
-      setUserTicket(true)
-      setUserSession(userData)
-      if (props.persona > 1) {
-        setUserTicket(false)
-      }
-      else {
-        setUserTicket(false)
-
-      }
-    }
-
-  }, [])
-
-  useEffect(() => {
-    
-    console.log(open)
-   
-  }, [])
   
-
-
-
   return (
     <>
       {mostrar && (
@@ -115,65 +77,45 @@ import {
 
                   {/* NOMBRE */}
 
-                  <Typography>Nombres Completos</Typography>
-
-                  {userSession.id != undefined? (
-
-                    <TextField
-                      sx={{ marginBottom: "20px", '&::placeholder': { textAlign: 'center', justifyContent: 'center' } }}
-                      name="firstName"
-                      value={`${userSession.firstName}`}
-                      label="Ingrese nombre"
-                      variant="outlined"
-                      inputProps={{
-                        ...register("firstName", { required: true }),
-                      }}
-                      error={errors.firstName}
-                      helperText={
-                        errors.firstName && <p>El campo nombre es requerido</p>
-                      }
-                    />) :
+                  <Typography>Nombre</Typography>
                     <TextField
                       sx={{ marginBottom: "20px", '&::placeholder': { textAlign: 'center', justifyContent: 'center' } }}
                       name="firstName"
 
-                      label="Ingrese nombre"
+                      label="Ingrese su nombre"
                       variant="outlined"
+                      value={firstName}
+                      onChange={(e)=>setFirstName(e.target.value)}
                       inputProps={{
                         ...register("firstName", { required: true }),
                       }}
+                      disabled={!isEdit}
                       error={errors.firstName}
                       helperText={
-                        errors.firstName && <p>El campo nombre es requerido</p>
+                        errors.firstName && "El campo nombre es requerido"
                       }
                     />
+                  <Typography>Apellido</Typography>
+                    <TextField
+                      sx={{ marginBottom: "20px", '&::placeholder': { textAlign: 'center', justifyContent: 'center' } }}
+                      name="lastName"
 
-                  }
-
-                  {/* EMAIL */}
-
+                      label="Ingrese su apellido"
+                      variant="outlined"
+                      value={lastName}
+                      onChange={(e)=>setLastName(e.target.value)}
+                      inputProps={{
+                        ...register("lastName", { required: true }),
+                      }}
+                      disabled={!isEdit}
+                      error={errors.lastName}
+                      helperText={
+                        errors.lastName && "El campo apellido es requerido"
+                      }
+                    />
                   <Typography sx={{ marginBottom: "10px" }}>
                     Correo electrónico
                   </Typography>
-                  {userSession.id != undefined? <TextField
-                    sx={{ marginBottom: "20px" }}
-                    name="email"
-                    value={`${userSession.email}`}
-                    variant="outlined"
-                    label="Ingrese su correo electrónico"
-                    {...register("email", {
-                      required: {
-                        value: true,
-                        message: "campo necesitado",
-                      },
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                        message: "El formato no es correcto",
-                      },
-                    })}
-                    error={errors.email}
-                    helperText={errors.email && <p>{errors.email.message}</p>}
-                  /> :
                     <TextField
                       sx={{ marginBottom: "20px" }}
                       name="email"
@@ -189,83 +131,47 @@ import {
                           message: "El formato no es correcto",
                         },
                       })}
+                      value={email}
+                      disabled={!isEdit}
+                      onChange={(e)=>setEmail(e.target.value)}
                       error={errors.email}
-                      helperText={errors.email && <p>{errors.email.message}</p>}
+                      helperText={errors.email && `${errors.email.message}`}
                     />
-                  }
 
                   {/* Telefono */}
 
                   <Typography sx={{ marginBottom: "10px" }}>
                     Teléfono
                   </Typography>
-                  {userSession.id != undefined? <TextField
-                    sx={{ marginBottom: "20px" }}
-                    name="phone"
-                    value={`${userSession.phone}`}
-                    variant="outlined"
-                    label="Ingrese su numero de teléfono"
-                    {...register("phone", { required: true })}
-                    error={errors.phone}
-                    helperText={
-                      errors.phone && <p>El campo teléfono es requerido</p>
-                    }
-                  /> :
                     <TextField
                       sx={{ marginBottom: "20px" }}
                       name="phone"
                       variant="outlined"
+                      
                       label="Ingrese su numero de teléfono"
                       {...register("phone", { required: true })}
+                      value={phone}
+                      onChange={(e)=>setPhone(e.target.value)}
+                      disabled={!isEdit}
                       error={errors.phone}
                       helperText={
-                        errors.phone && <p>El campo teléfono es requerido</p>
+                        errors.phone && "El campo teléfono es requerido"
                       } />
-                  }
-
-                  {/* Cedula */}
 
                   <Typography sx={{ marginBottom: "10px" }}>
                     Cédula de identidad
                   </Typography>
-
-                  {userSession.id != undefined? <TextField
-                    sx={{ marginBottom: "20px" }}
-                    name="document"
-                    value={`${userSession.document}`}
-                    variant="outlined"
-                    label="Ingrese su cedula"
-                    type="tel"
-                    {...register("document", {
-                      required: {
-                        valueAsNumber: true,
-                        message: "Campo requerido",
-                      },
-
-                      pattern: {
-                        value: /^(0|[1-9]\d*)(\.\d+)?$/,
-                        message: "Solo utilizar numeros",
-                      },
-                      // pattern: {
-                      //   value: /[^a-zA-Z0-9]/g,
-                      //   message: "No introducir simbolos",
-                      // },
-                    })}
-                    error={errors.document}
-                    helperText={
-                      errors.document && <p>{errors.document.message}</p>
-                    }
-                  /> :
                     <TextField
                       sx={{ marginBottom: "20px" }}
                       name="document"
                       variant="outlined"
                       label="Ingrese su cedula"
                       type="tel"
+                      
                       {...register("document", {
                         required: {
-                          valueAsNumber: true,
-                          message: "Campo requerido",
+                          value: true,
+                          message: "campo necesitado",
                         },
 
                         pattern: {
@@ -277,38 +183,31 @@ import {
                         //   message: "No introducir simbolos",
                         // },
                       })}
+                      value={document}
+                      disabled={!isEdit}
+                      onChange={(e)=>setDocument(e.target.value)}
                       error={errors.document}
                       helperText={
-                        errors.document && <p>{errors.document.message}</p>
+                        errors.document && `${errors.document.message}`
                       }
                     />
-                  }
-
-                  {/* <Box sx={{ width: "250px" }}>
-                    <TextField
-                      label="Seleccionar cantidad"
-                      select
-                      value={ticketType}
-                      onChange={handleChanges}
-                      fullWidth
-                      defaultvalue="select"
-                    >
-                      <MenuItem value={4}>Palco B y D 4$</MenuItem>
-                      <MenuItem value={8}>Gradas A y B 8$</MenuItem>
-                      <MenuItem value={40}>Zona Media Roja 40$</MenuItem>
-                      <MenuItem value={80}>80$ VIP</MenuItem>
-
-                    </TextField>
-                  </Box> */}
-
+                  {isEdit&&
                   <Button
                     type="submit"
                     variant="contained"
                     sx={{ backgroundColor: "#FECC1D", marginBottom: "30px", marginLeft: '71px' }}
                   >
                     Guardar
-                  </Button>
+                  </Button>}
+                  
                 </form>
+                {!isEdit&&<Button
+                    onClick={()=>{setIsEdit(true); props.deleteUser(props.id)}}
+                    variant="contained"
+                    sx={{ backgroundColor: "#FECC1D", marginBottom: "30px", marginLeft: '71px' }}
+                  >
+                    Modificar
+                  </Button>}
               </Paper>
             </List>
           </Collapse>

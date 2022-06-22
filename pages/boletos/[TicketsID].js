@@ -16,7 +16,7 @@ import Template from "components/imported/misc/Template";
 import Spinner from 'components/imported/misc/Spinner'
 
 
-import { eventService } from "src/services";
+import { eventService, reservationsService } from "src/services";
 
 
 const drawerStyle = {};
@@ -30,20 +30,17 @@ const Details = ({ juegos }) => {
 
   const router = useRouter();
   const boletosID = router.query.TicketsID;
-  //console.log("estas es la url",boletosID)
-  const itemFiltrado = []
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("lg"));
-  const matchesmd = useMediaQuery(theme.breakpoints.up("md"));
-  const [numberT, setNumberT] = useState()
-
+  const [numberT, setNumberT] = useState(1)
+  const [seatMapInfo, setSeatMapInfo] = useState({})
+  const [aditionalsUsers, setAditionalUsers] = useState([])
    useEffect(() => {
      
     async function init(){
       setLoading(true)
       const { response, status } = await eventService.getEvent({id:boletosID})
       setLoading(false)
-      console.log(response)
       
       if (status === 200){
         setMatchinfo(response)
@@ -51,12 +48,25 @@ const Details = ({ juegos }) => {
     }
     init()
   }, []) 
-
+  
   const numberTicket = (numberT) => {
-    console.log("numero de Ticket", numberT)
     setNumberT(numberT);
   }
-
+  const makeReservation = async()=>{
+    const {status,response} = await reservationsService.addReservation({
+      data: {
+        event:boletosID,
+        seatMapInfo,
+        aditionalsUsers
+      }
+    })
+    if(status===200){
+      router.push({
+        pathname:`/boletos/checkout/${boletosID}`,
+        query:{reserveToken:response.reservation.reservationCode}
+      })
+    }
+  }
   return (
     <>
     <Template>
@@ -65,7 +75,7 @@ const Details = ({ juegos }) => {
           <Grid item xs={3} sx={{ borderRightColor: "black" }}>
             
               <div style={{marginLeft: '50px', marginTop: '50px'}} >
-                <TicketPicker onclickT={(e)=>numberTicket(e)} />
+                <TicketPicker setAditionalsUsers={(users)=>setAditionalUsers(users)} onclickT={(e)=>numberTicket(e)} />
               </div>
             
           </Grid>
@@ -75,8 +85,8 @@ const Details = ({ juegos }) => {
           <Grid item xs={matches ? 9 : 12}>
             <MatchSelected event={matchinfo} />
             
-            <SeatMapMain  hashEvent={boletosID} numberTicket={numberT} />
-            <ResumenDeCompra matchid={boletosID} />
+            <SeatMapMain setSeatMapInfo={(data)=>{setSeatMapInfo(data)}}  hashEvent={boletosID} numberTicket={numberT} />
+            <ResumenDeCompra matchid={boletosID} makeReservation={makeReservation}/>
           </Grid>}
         </Grid>
       </div>

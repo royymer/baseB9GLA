@@ -1,6 +1,7 @@
 import { urls } from "../../constants"
 
-const addReservation = async ({ token, data }) => {
+const addReservation = async ({ data }) => {
+    const token = localStorage.getItem("token")
     const request = await fetch(`${urls.addReservation}`, {
         method: "POST",
         headers: {

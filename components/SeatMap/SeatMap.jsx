@@ -28,10 +28,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const SeatMap = ({ hashEvent, numberTicket }) => {
+const SeatMap = ({ hashEvent, numberTicket, setSeatMapInfo }) => {
     //zona seleccionada que zona es
     //const [queZ, setQueZ] = useState();
-
+    
     const [arrayAreglado, setArrayArreglado] = useState();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [arrayConsultaOrdenada, setArrayConsultaOrdenada] = useState({
@@ -62,20 +62,46 @@ const SeatMap = ({ hashEvent, numberTicket }) => {
         setFilaElegida(event.target.value)
     }
     const selectSeat = (e) => {
-        setSelectedSeat(e.target.value)
-        const oldSeats = [...selectedSeats]
-        oldSeats.push({
-            sector: sector._id,
-            zone: zone._id,
-            section: selectSection._id,
-            row: filaElegida,
-            seat: e.target.value
-        })
+        //setSelectedSeat(e.target.value)
+        const seatsSelectAux= [...selectedSeats]
+        if(seatsSelectAux.find(elem=>elem.seat._id===e.target.value)){
+            return;
+        }
+        if(seatsSelectAux.length<numberTicket){
+            seatsSelectAux.push({
+                sector: {
+                    _id: sector._id,
+                    name: sector.sectorClass.name
+                },
+                zone: {
+                    _id: zone._id,
+                    name: zone.zoneClass.name
+                },
+                section: {
+                    _id:selectSection._id,
+                    name: selectSection.sectionClass.name
+                },
+                row: {
+                    _id: filaElegida,
+                    name: row.rowNumber
+                },
+                seat: {
+                    _id: e.target.value,
+                    name: row.seats.find(seat=>seat._id===e.target.value).seatNumber
+                },
 
-        setSelectedSeats([...oldSeats])
+            })
+            setSeatMapInfo({
+                sector: sector._id,
+                zone: zone._id,
+                section: selectSection._id,
+                seats:seatsSelectAux.map(ele=>{return{seat:ele.seat._id, row:ele.row._id}})
+            })
+            setSelectedSeats([...seatsSelectAux])
+        }
+        
     }
     const handleOnChange = (e) => {
-        console.log("valores", e)
         if (e[0] !== undefined) {
             setModalIsOpen(true)
             let splitVal = e[0].id.split(" ");
@@ -85,13 +111,13 @@ const SeatMap = ({ hashEvent, numberTicket }) => {
             setSector(sector)
             setZone(zone)
             setSelectSection(section);
-            //vaciar vector
 
         }
     }
 
     useEffect(() => {
         async function init() {
+            console.log(numberTicket)
             let request0 = await eventService.eventGetSeatMap({ id: hashEvent, ticket: numberTicket });
 
             let sectores = await request0.response.seatMap.sectors;
@@ -106,8 +132,18 @@ const SeatMap = ({ hashEvent, numberTicket }) => {
             });
         }
         init();
-    }, []);
-
+    }, [numberTicket]);
+    const SeatDetails = (props) =>{
+        return (
+            <div>
+                <p>Sector: {props.sector.name}</p>
+                <p>Zone: {props.zone.name}</p>
+                <p>Section: {props.section.name}</p>
+                <p>row: {props.row.name}</p>
+                <p>seat: {props.seat.name}</p>
+            </div>
+        )
+    }
     function FullScreenDialog(opcion, queZ) {
         const handleClose = () => {
             setModalIsOpen(false)
@@ -126,7 +162,7 @@ const SeatMap = ({ hashEvent, numberTicket }) => {
                             <IconButton
                                 edge="start"
                                 color="inherit"
-                                onClick={handleClose}
+                                onClick={handleClose}Resumen
                                 aria-label="close"
                             >
                                 <CloseIcon />
@@ -143,32 +179,36 @@ const SeatMap = ({ hashEvent, numberTicket }) => {
                         <Grid item xs={12}>
                             <Grid container justifyContent="center" spacing={2}>
                                 <Grid key={`r07`} item>
-                                    <h1>ki</h1>
+                                    <h1></h1>
                                 </Grid>
                             </Grid>
                             <Grid container justifyContent="center" spacing={2}>
                                 <Grid item md={6}>
                                     <Grid container justifyContent="center" spacing={2}>
                                         <Grid item xs={8}>
+                                            <h1>Selecciona tu fila</h1>
+                                        </Grid>
+                                        <Grid item xs={8}>
                                             <Select
                                                 value={filaElegida}
-                                                label="Elija su Fila"
                                                 onChange={elegirFila}
                                                 fullWidth
                                             >
                                                 <MenuItem selected value="" >Ninguno seleccionado</MenuItem>
                                                 {
                                                     selectSection.rows.map((row, index) => (
-                                                        <MenuItem value={row._id} key={index} >{row.rowNumber}</MenuItem>
+                                                        <MenuItem value={row._id} key={index} >Fila {row.rowNumber}</MenuItem>
                                                     ))
                                                 }
                                             </Select>
+                                        </Grid>
+                                        <Grid item xs={8}>
+                                            <h1>Selecciona tu asiento</h1>
                                         </Grid>
                                         {row.seats.length &&
                                             <Grid item xs={8}>
                                                 <Select
                                                     value={selectedSeat}
-                                                    label="Elija su asiento"
                                                     onChange={selectSeat}
                                                     fullWidth
                                                 >
@@ -182,26 +222,26 @@ const SeatMap = ({ hashEvent, numberTicket }) => {
                                                                     backgroundColor: seat.isAvailableSeat === false ? "red" : "white"
                                                                 }}
                                                             >
-                                                                {seat.seatNumber}
+                                                              Asiento  {seat.seatNumber}
                                                             </MenuItem>
                                                         ))
                                                     }
                                                 </Select>
                                             </Grid>}
-
+                                            {selectedSeats.length&&
+                                            <Grid item md={8}>
+                                                <h1>Seleccion de asientos</h1>
+                                                {selectedSeats.map((seat, index) => (
+                                                    <Grid>
+                                                        <SeatDetails {...seat}/>
+                                                    </Grid>
+                                                ))}
+                                            </Grid>}
                                     </Grid>
-
+                                    
                                 </Grid>
                                 <Grid item md={6}>
-                                    {selectedSeats.map((seat, index) => (
-                                        <Grid>
-                                            <p>Sector: {seat.sector}</p>
-                                            <p>Zone: {seat.zone}</p>
-                                            <p>Section: {seat.section}</p>
-                                            <p>Row: {seat.row}</p>
-                                            <p>Seat {seat.seat}</p>
-                                        </Grid>
-                                    ))}
+
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -222,7 +262,6 @@ const SeatMap = ({ hashEvent, numberTicket }) => {
             <CheckboxSVGMap
                 map={arrayConsultaOrdenada}
                 onChange={(e) => handleOnChange(e)}
-                onLocationMouseMove={(e)=>console.log(e.target)}
 
             />
 

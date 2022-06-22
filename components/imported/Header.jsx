@@ -69,13 +69,13 @@ export default function Header() {
     
   }, [])
 
-  useEffect(() => {
-    localStorage.clear()
-    setLogOut(false)
-    setIsLogged(false)
-  
-    
-  }, [logOut])
+  //useEffect(() => {
+  //  localStorage.clear()
+  //  setLogOut(false)
+  //  setIsLogged(false)
+  //
+  //  
+  //}, [logOut])
   
   
 
