@@ -17,14 +17,14 @@ const addUser = async ( data ) => {
     }
 }
 
-const validateAccount = async ({ data }) => {
+const validateAccount = async ({ token }) => {
     const request = await fetch(`${urls.validateAccount}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            ...data
+            token
         })
     });
     const response = await request.json();

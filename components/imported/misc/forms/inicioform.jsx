@@ -1,5 +1,9 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+
+
+
 import OutlinedInput from "@mui/material/OutlinedInput";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
@@ -8,24 +12,6 @@ import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import FormHelperText from "@mui/material/FormHelperText";
-import FormContext from "../formContext";
-import { useContext } from "react";
-import ForgotPassword from "./forgotPassword";
-
-import { TextField } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
-import Link from "next/link";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import { Grid } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { Drawer } from "@mui/material";
-import { Box } from "@mui/system";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -33,13 +19,21 @@ import {
   DialogContentText,
   DialogActions,
 } from "@mui/material";
+import { TextField } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import { Grid } from "@mui/material";
+
+import ForgotPassword from "./forgotPassword";
+import Spinner from "../Spinner";
+
+
 
 //servicios
 import { userService } from "../../../../src/services";
 //routers
 import { useRouter } from "next/router";
 
-import CloseIcon from "@mui/icons-material/Close";
 
 const InicioForm = (props) => {
 
@@ -62,6 +56,11 @@ const InicioForm = (props) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setloading] = useState(false)
+  const [error, setError] = useState(false);
+  const [message, setMessage] = useState("");
+
+
 
   const activateButton = email != null && email.trim().length > 0;
 
@@ -96,29 +95,67 @@ const InicioForm = (props) => {
   }; */
 
   const onSubmit = async (data) => {
-   
+
     if (data != undefined) {
-    try {
-      /* let data = {
-        email: email,
-        password: password
-      } */
+      try {
+        /* let data = {
+          email: email,
+          password: password
+        } */
 
-      let { status, response } = await userService.login(data);
+        let { status, response } = await userService.login(data);
 
-      if (status === 200) {
-        localStorage.setItem("token", response.token);
-        localStorage.setItem('user', JSON.stringify(response.user))
-        props.setIsLogged(true)
+        if (status === 200) {
+          localStorage.setItem("token", response.token);
+          localStorage.setItem("user", JSON.stringify(response.user))
+          props.setIsLogged(true)
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
     }
   }
 
+  const CloseInicioDialog = async () => {
+
+    onSubmit();
+
+    props.setIsDialogInicioOpen(false)
+
+  }
+
+
+  //validacion de usuario sunset
+
+  useEffect(() => {
+    async function validate() {
+      if (props.token) {
+        console.log(props.token)
+        try {
+          setIsLoading(true);
+          const { status, response } = await userServices.validateAccount(props.token);
+          setIsLoading(false);
+          if (status === 400) {
+            setError(true);
+            setMessage(response.error.message);
+          } else {
+            setError(false);
+            setMessage(response.message);
+          }
+          setIsOpen(true);
+        } catch (e) {
+          setIsLoading(false);
+          console.log(e);
+        }
+      }
+    }
+    validate();
+  }, [props.token]);
+
+
   return (
     <>
+      <Spinner loading={loading} />
       <ForgotPassword
         isOpen={isPasswordConfirmOpen}
         onClose={() => setIsPasswordConfirmOpen(false)}
@@ -256,7 +293,7 @@ const InicioForm = (props) => {
                     type="submit"
                     variant="contained"
                     sx={{ backgroundColor: "#FECC1D", marginBottom: "30px" }}
-                    onClick={() => onSubmit()}
+                    onClick={() => { CloseInicioDialog() }}
                   >
                     Iniciar sesión{" "}
                   </Button>

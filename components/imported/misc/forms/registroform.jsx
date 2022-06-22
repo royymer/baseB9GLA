@@ -37,6 +37,7 @@ const RegisterForm = (props) => {
 
   const [isDialogInicioOpen, setIsDialogInicioOpen] = useState(false)
   const [isDialogRegistroOpen, setIsDialogRegistroOpen] = useState(false)
+  const [showConfirmEmail, setShowConfirmEmail] = useState(false)
   const [isRegisterConfirmOpen, setIsRegisterConfirmOpen] = useState(false)
   const [isPasswordConfirmOpen, setIsPasswordConfirmOpen] = useState(false)
 
@@ -119,16 +120,23 @@ const RegisterForm = (props) => {
         phone: phone,
         password: password,
         document: document,
-        
+
       }
       let { status, response } = await userService.addUser(data);
       if (status === 200) {
         alert("El usuario ha sido registrado");
+        setShowConfirmEmail(true)
       } else {
         console.log(response)
       }
     }
   }
+
+  const VerifyModalOpen = () => {
+    registrar()
+
+  }
+
 
   return (
     <>
@@ -394,14 +402,14 @@ const RegisterForm = (props) => {
                       name="confirmPassword"
                       label="Confirme su contrasena"
                       variant="outlined"
-                      
+
                       {...register("confirmPassword", {
                         required: {
                           value: true,
                           message: "Campo requerido",
                         },
                         validate: (value) => watch("password") === value || "Las contraseñas no coinciden.",
-                        
+
                       })}
                       error={errors.confirmPassword}
                       id="outlined-adornment-password"
@@ -489,7 +497,7 @@ const RegisterForm = (props) => {
                     type="submit"
                     variant="contained"
                     sx={{ backgroundColor: "#FECC1D", marginBottom: "30px" }}
-                    onClick={() => registrar()}
+                    onClick={() => VerifyModalOpen()}
                   >
                     Registrarse{" "}
                   </Button>
@@ -544,6 +552,27 @@ const RegisterForm = (props) => {
               </form>
             </DialogContentText>
           </DialogContent>
+          {showConfirmEmail &&
+            <Dialog open={showConfirmEmail} onClose={()=>{setShowConfirmEmail(false); setIsDialogRegistroOpen(false)}}>
+              <Grid container>
+                <Grid item xs={12} sx={{ textAlign: "end", marginRight: "10px" }}>
+                  {/* <CloseIcon onClick={() => setIsDialogInicioOpen(false)} /> */}
+                </Grid>
+                <Grid item xs={12}>
+                  <DialogTitle sx={{ textAlign: "center" }}>
+                    Verifica tu correo
+                  </DialogTitle>
+                </Grid>
+
+                <DialogContent>
+                  <DialogContentText>
+                    Se ha enviado un correo de confirmacion, porfavor haz click en el link enviado para verificar tu cuenta
+                  </DialogContentText>
+                </DialogContent>
+              </Grid>
+            </Dialog>
+          }
+
         </Grid>
       </Dialog>
     </>

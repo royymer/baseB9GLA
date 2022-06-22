@@ -56,6 +56,7 @@ export default function Header() {
   
   const [isDialogInicioOpen, setIsDialogInicioOpen] = useState(false)
   const [isDialogRegistroOpen, setIsDialogRegistroOpen] = useState(false)
+  const [logOut, setLogOut] = useState(false)
 
   const [isLogged, setIsLogged] = useState(false)
 
@@ -67,6 +68,15 @@ export default function Header() {
   
     
   }, [])
+
+  useEffect(() => {
+    localStorage.clear()
+    setLogOut(false)
+    setIsLogged(false)
+  
+    
+  }, [logOut])
+  
   
 
   const {
@@ -88,6 +98,7 @@ export default function Header() {
       />
       <InicioForm
         setIsLogged={(isLogged)=> {console.log(isLogged); setIsLogged(isLogged)} }
+        setIsDialogInicioOpen= {(isDialogInicioOpen) => {console.log(isDialogInicioOpen); setIsDialogInicioOpen(isDialogInicioOpen) } }
         isOpen={isDialogInicioOpen}
         onClose={() => setIsDialogInicioOpen(false)}
       />
@@ -111,6 +122,7 @@ export default function Header() {
                   color="inherit"
                   variant="outlined"
                   sx={{ color: "#FECC1D", marginRight: "10px" }}
+                  onClick={()=>setLogOut(true) }
                   >
                   Hola, {`${JSON.parse(localStorage.getItem('user')).firstName}`}
                 </Button>

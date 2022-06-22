@@ -1,5 +1,7 @@
 //react
 import React, { useState, useEffect } from 'react'
+import router, { useRouter } from 'next/router'
+
 
 //components
 import Footer from '../components/imported/Footer'
@@ -16,6 +18,13 @@ import { eventService } from '../src/services'
 //mui materials
 import { Grid } from "@mui/material";
 import { set } from 'date-fns'
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  
+} from "@mui/material";
 
 //para la dimensión
 //import useWindowDimensions from '../hooks/useWindowDimensions';
@@ -29,8 +38,13 @@ import {
 
 export default function Home() {
 
+  const router = useRouter()
+
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const [showVerifiedEmail, setShowVerifiedEmail] = useState(false)
+  const [verifiedEmail, setVerifiedEmail] = useState(false)
 
   const [width, height] = useWindowSize()
   const onlyWidth = useWindowWidth()
@@ -48,16 +62,58 @@ export default function Home() {
     init()
   }, [])
 
-  console.log(matches)
+  useEffect(() => {
 
+    console.log(router.query.valid)
 
+    if (router.query.valid) {
+      setShowVerifiedEmail(true)
+      if(router.query.valid == 'true'){
+      setVerifiedEmail(true)}
+      else{setVerifiedEmail(false)}
+    }
+  
+    
+    
+  }, [router.query.valid])
+  console.log(verifiedEmail)
+  console.log(showVerifiedEmail)
+  
+  
 
-  console.log(matches)
+  /*   console.log(matches)
+  
+  
+  
+    console.log(matches) */
 
   return (
 
     <div style={{}}>
       <Header />
+      {showVerifiedEmail &&
+        
+        <Dialog open={showVerifiedEmail} onClose={() => { setShowVerifiedEmail(false) }}>
+          <Grid container>
+            <Grid item xs={12} sx={{ textAlign: "end", marginRight: "10px" }}>
+              {/* <CloseIcon onClick={() => setIsDialogInicioOpen(false)} /> */}
+            </Grid>
+            <Grid item xs={12}>
+              <DialogTitle sx={{ textAlign: "center" }}>
+                {`Verificacion ${verifiedEmail? 'Exitosa' : 'Fallida' }`}
+              </DialogTitle>
+            </Grid>
+
+            <DialogContent>
+              <DialogContentText>
+                {verifiedEmail? 'Su verificacion de correo electronico fue hecha correctamente' : 'Su Verificacion de correo ha fallado, verifique el enlace de validacion' }
+              </DialogContentText>
+            </DialogContent>
+          </Grid>
+        </Dialog>
+        
+      }
+
       <Grid container xs={9} style={{ marginLeft: 'auto', marginRight: 'auto' }}>
 
         {
