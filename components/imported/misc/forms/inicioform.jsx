@@ -96,8 +96,7 @@ const InicioForm = (props) => {
   }; */
 
   const onSubmit = async (data) => {
-    console.log(isValid)
-    console.log(data)
+   
     if (data != undefined) {
     try {
       /* let data = {

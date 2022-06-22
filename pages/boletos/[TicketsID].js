@@ -26,6 +26,7 @@ const Details = ({ juegos }) => {
   
   const [matchinfo, setMatchinfo] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [userSession, setUserSession] = useState({})
 
 
   const router = useRouter();
@@ -51,6 +52,14 @@ const Details = ({ juegos }) => {
     init()
   }, []) 
 
+  useEffect(() => {
+    // Perform localStorage action
+     let user = localStorage.getItem('user')
+    setUserSession(user)
+    
+  }, []) 
+
+
   return (
     <>
     <Template>
@@ -59,7 +68,7 @@ const Details = ({ juegos }) => {
           <Grid item xs={3} sx={{ borderRightColor: "black" }}>
             
               <div style={{marginLeft: '50px', marginTop: '50px'}} >
-                <TicketPicker />
+                <TicketPicker userSession={userSession} />
               </div>
             
           </Grid>

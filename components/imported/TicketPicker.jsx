@@ -1,4 +1,4 @@
-import React,  { useState } from 'react'
+import React,  { useState, useEffect } from 'react'
 import { Typography, Box, TextField } from '@mui/material';
 import MenuItem from "@mui/material/MenuItem";
 import BoletosForm from '../imported/misc/forms/boletosForm';
@@ -6,7 +6,7 @@ import BoletosForm from '../imported/misc/forms/boletosForm';
 
 
 
-function TicketPicker() {
+function TicketPicker({ user }) {
 
   const [boletos, setBoletos] = useState(1);
 
@@ -21,6 +21,15 @@ function TicketPicker() {
   const handleChanges = (event) => {
     setBoletos(event.target.value);
   };
+
+
+
+   useEffect(() => {
+    // Perform localStorage action
+     let item = JSON.parse(localStorage.getItem('user'))
+    console.log(item)
+
+  }, []) 
 
   return (
     <>

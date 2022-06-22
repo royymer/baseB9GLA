@@ -142,7 +142,7 @@ export default function Header() {
             <>
               {/* //////////////MOBILE/////////////// */}
 
-              <div>
+              <div style={{}} >
                 <Drawer
                   sx={{
                     "& .css-1nvnyqx-MuiPaper-root-MuiDrawer-paper": {
@@ -180,13 +180,14 @@ export default function Header() {
                       color="inherit"
                       variant="contained"
                       style={{ margin: "10px", backgroundColor: "#FECC1D" }}
+                      onClick={() => setIsDialogInicioOpen(true)}
                     >
                       Iniciar sesión
                     </Button>
                   </Box>
                 </Drawer>
               </div>
-              {isDrawerOpen ? (
+              {isDrawerOpen? (
                 <CloseIcon
                   onClick={() => {
                     setIsDrawerOpen(false);
@@ -198,9 +199,11 @@ export default function Header() {
                     setIsDrawerOpen(true);
                   }}
                 >
-                  <MenuIconNew />
+                  {isLogged==false &&
+                  <MenuIconNew />}
                 </div>
               )}
+              
             </>
           )}
         </Toolbar>
