@@ -20,14 +20,14 @@ import {
   Box,
 } from "@mui/material";
 
-const BoletosForm = (props) => {
+  const BoletosForm = (props) => {
   const [mostrar, setMostrar] = useState(true);
   const [datosInForm, setDatosInForm] = useState(false);
   const [open, setOpen] = useState(false);
   const [userTicket, setUserTicket] = useState(true)
   const [userSession, setUserSession] = useState({})
-/*   const [ticketType, setTicketType] = useState(4)
- */
+  /*   const [ticketType, setTicketType] = useState(4)
+   */
 
   const [multipleForm, setMultipleForm] = useState([])
 
@@ -69,6 +69,7 @@ const BoletosForm = (props) => {
 
   useEffect(() => {
     if (localStorage.getItem('user')) {
+      
       const userData = JSON.parse(localStorage.getItem('user'))
       console.log(userData)
       setUserTicket(true)
@@ -76,9 +77,20 @@ const BoletosForm = (props) => {
       if (props.persona > 1) {
         setUserTicket(false)
       }
+      else {
+        setUserTicket(false)
+
+      }
     }
 
   }, [])
+
+  useEffect(() => {
+    
+    console.log(open)
+   
+  }, [])
+  
 
 
 
@@ -105,7 +117,7 @@ const BoletosForm = (props) => {
 
                   <Typography>Nombres Completos</Typography>
 
-                  {userTicket ? (
+                  {userSession.id != undefined? (
 
                     <TextField
                       sx={{ marginBottom: "20px", '&::placeholder': { textAlign: 'center', justifyContent: 'center' } }}
@@ -143,7 +155,7 @@ const BoletosForm = (props) => {
                   <Typography sx={{ marginBottom: "10px" }}>
                     Correo electrónico
                   </Typography>
-                  {userTicket ? <TextField
+                  {userSession.id != undefined? <TextField
                     sx={{ marginBottom: "20px" }}
                     name="email"
                     value={`${userSession.email}`}
@@ -187,7 +199,7 @@ const BoletosForm = (props) => {
                   <Typography sx={{ marginBottom: "10px" }}>
                     Teléfono
                   </Typography>
-                  {userTicket ? <TextField
+                  {userSession.id != undefined? <TextField
                     sx={{ marginBottom: "20px" }}
                     name="phone"
                     value={`${userSession.phone}`}
@@ -216,7 +228,8 @@ const BoletosForm = (props) => {
                   <Typography sx={{ marginBottom: "10px" }}>
                     Cédula de identidad
                   </Typography>
-                  {userTicket ? <TextField
+
+                  {userSession.id != undefined? <TextField
                     sx={{ marginBottom: "20px" }}
                     name="document"
                     value={`${userSession.document}`}

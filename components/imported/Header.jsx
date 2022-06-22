@@ -22,6 +22,7 @@ import { RegisterForm, InicioForm } from "./misc/forms";
 
 import CloseIcon from "@mui/icons-material/Close";
 
+
 const mainBoxStyles = {
   backgroundColor: "#0D1626",
 };
